@@ -2697,3 +2697,13 @@ UnboundLocalError: local variable 'date' referenced before assignment
 2025-03-02 20:53:40,169 - werkzeug - INFO - 127.0.0.1 - - [02/Mar/2025 20:53:40] "GET /api/session/time_remaining HTTP/1.1" 200 -
 2025-03-02 20:54:30,057 - __main__ - INFO - No session_start found in session
 2025-03-02 20:54:30,058 - werkzeug - INFO - 127.0.0.1 - - [02/Mar/2025 20:54:30] "GET /api/session/time_remaining HTTP/1.1" 200 -
+2025-03-02 21:51:08,199 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://192.168.1.179:8080
+2025-03-02 21:51:08,199 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-02 21:51:08,199 - werkzeug - INFO -  * Restarting with stat
+2025-03-02 21:51:08,511 - werkzeug - WARNING -  * Debugger is active!
+2025-03-02 21:51:08,520 - werkzeug - INFO -  * Debugger PIN: 924-649-867
+2025-03-02 21:51:12,069 - werkzeug - INFO - 127.0.0.1 - - [02/Mar/2025 21:51:12] "GET / HTTP/1.1" 200 -
+2025-03-02 21:51:12,228 - werkzeug - INFO - 127.0.0.1 - - [02/Mar/2025 21:51:12] "[35m[1mGET /favicon.ico HTTP/1.1[0m" 204 -

@@ -1521,7 +1521,7 @@ def calculate_change_rate(current, previous):
         if previous == 0:
             if current == 0:
                 return 0
-            return None  # 无法计算增长率（从0增长）
+            return None  # 無法计算增长率（从0增长）
         if current == 0:
             return -100  # 降低100%
         return round((current - previous) / abs(previous) * 100, 2)
@@ -1814,7 +1814,7 @@ def list_files():
 def delete_file(filename):
     """删除会话中的文件"""
     if not filename.endswith('.csv'):
-        return jsonify({'success': False, 'error': '无效的文件名'})
+        return jsonify({'success': False, 'error': '無效的文件名'})
     
     try:
         session_dir = get_session_dir()
@@ -1980,7 +1980,7 @@ def get_available_years():
 
         # 检查是否有转换失败的情况（即 NaT 值）
         if df['日期'].isna().any():
-            raise ValueError("日期列包含无法解析的值")
+            raise ValueError("日期列包含無法解析的值")
 
         # 提取所有不重复的年份
         years = sorted(df['日期'].dt.year.unique().tolist(), reverse=True)
@@ -2252,7 +2252,7 @@ def yearly_analysis():
     df['日期時間'] = pd.to_datetime(df['日期'].astype(str) + ' ' + df['時間'].astype(str), errors='coerce')
 
     if df['日期'].isna().any():
-        raise ValueError("時間列包含无法解析的值")
+        raise ValueError("時間列包含無法解析的值")
 
     year = request.args.get('year', type=int)
     min_amount = request.args.get('min_amount', type=float)

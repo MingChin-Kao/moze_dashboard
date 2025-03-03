@@ -955,7 +955,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // 更新支出占比
         document.getElementById('expenseRatio').textContent = `${stats.expense_ratio}%`;
-        document.getElementById('ratioTrend').textContent = stats.total_expense > 0 ? '占总支出比例' : '暂无数据';
+        document.getElementById('ratioTrend').textContent = stats.total_expense > 0 ? '占总支出比例' : '暂無数据';
         
         // 根据時間范围更新月均支出和交易频率
         const monthlyAvgElement = document.getElementById('monthlyAvg');
@@ -1009,7 +1009,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     type: 'cross'  // 改用十字准星指示器
                 },
                 formatter: function(params) {
-                    if (!hasData) return '暂无数据';
+                    if (!hasData) return '暂無数据';
                     const date = params[0].name;
                     const amount = params[0].value;
                     const ratio = params[1].value;
@@ -1206,7 +1206,7 @@ document.addEventListener('DOMContentLoaded', function() {
             tooltip: {
                 trigger: 'axis',
                 formatter: function(params) {
-                    if (!hasData) return '暂无数据';
+                    if (!hasData) return '暂無数据';
                     const range = params[0].name;
                     const count = params[0].value;
                     const total = data.distribution.counts.reduce((a, b) => a + b, 0);
@@ -1260,7 +1260,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     left: 'center',
                     top: 'middle',
                     style: {
-                        text: '暂无数据',
+                        text: '暂無数据',
                         fill: '#999',
                         font: '14px sans-serif'
                     }

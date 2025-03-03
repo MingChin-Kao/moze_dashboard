@@ -28,7 +28,7 @@ GET /api/stats
 - group_by: (string) 分组方式 [date/category/hour/payment]
 - min_amount: (float) 最小金额
 - max_amount: (float) 最大金额
-- include_invalid: (bool) 是否包含无效交易，默认 false
+- include_invalid: (bool) 是否包含無效交易，默认 false
 
 返回：
 {
@@ -117,7 +117,7 @@ Content-Type: multipart/form-data
 - 交易成功：正常计入统计
 - 退款成功：金额取负值，抵消原交易
 - 交易关闭：视为退款處理
-- 其他状态：标记为无效交易
+- 其他状态：标记为無效交易
 
 ### 3.3 支付方式标准化
 ~~~python

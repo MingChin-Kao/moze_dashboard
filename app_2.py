@@ -1150,7 +1150,7 @@ def calculate_change_rate(current, previous):
         if previous == 0:
             if current == 0:
                 return 0
-            return None  # 无法计算增长率（从0增长）
+            return None  # 無法计算增长率（从0增长）
         if current == 0:
             return -100  # 降低100%
         return round((current - previous) / abs(previous) * 100, 2)
@@ -1464,7 +1464,7 @@ def list_files():
 def delete_file(filename):
     """删除会话中的文件"""
     if not filename.endswith('.csv'):
-        return jsonify({'success': False, 'error': '无效的文件名'})
+        return jsonify({'success': False, 'error': '無效的文件名'})
     
     try:
         session_dir = get_session_dir()

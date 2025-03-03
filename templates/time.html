@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}时间分析{% endblock %}
+{% block title %}時間分析{% endblock %}
 
 {% block head %}
 <style>
@@ -146,7 +146,7 @@
     height: 280px !important;
 }
 
-/* 日内时段分布图表 */
+/* 日内時段分布图表 */
 #hourlyChart {
     height: 400px !important;
 }
@@ -214,7 +214,7 @@
 
 {% block content %}
 <div class="page-header">
-    <h1 class="page-title">时间分析</h1>
+    <h1 class="page-title">時間分析</h1>
     <div class="year-controls">
         <button id="prevYear" class="year-button">
             <i class="fas fa-chevron-left"></i>
@@ -243,7 +243,7 @@
 <div class="chart-grid">
     <div class="chart-card">
         <div class="chart-header">
-            <h2 class="chart-title">日内时段分布</h2>
+            <h2 class="chart-title">日内時段分布</h2>
         </div>
         <div class="chart-container" id="hourlyChart"></div>
     </div>
@@ -283,7 +283,7 @@ function showTransactionModal(title, transactions) {
                 <table class="transaction-table">
                     <thead>
                         <tr>
-                            <th>时间</th>
+                            <th>時間</th>
                             <th>商品说明</th>
                             <th>交易对方</th>
                             <th>分类</th>
@@ -602,7 +602,7 @@ document.addEventListener('DOMContentLoaded', function() {
         heatmapChart.setOption(option);
     }
 
-    // 加载时间分析数据
+    // 加载時間分析数据
     function loadData(year) {
         // 首先加载热力图数据
         fetch(`/api/daily_data?year=${year}&filter=${currentFilter}`)
@@ -621,7 +621,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.error('Error loading heatmap data:', error);
             });
 
-        // 然后加载时间分析数据
+        // 然后加载時間分析数据
         fetch(`/api/time_analysis?year=${year}&filter=${currentFilter}`)
             .then(response => response.json())
             .then(data => {
@@ -665,10 +665,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log('最终工作日数据:', weekdayData);
                 console.log('最终周末数据:', weekendData);
                 
-                // 设置日内时段分布图表
+                // 设置日内時段分布图表
                 hourlyChart.setOption({
                     title: {
-                        text: '日内消费时段分布',
+                        text: '日内消费時段分布',
                         left: 'center'
                     },
                     tooltip: {
@@ -689,7 +689,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     },
                     xAxis: {
                         type: 'category',
-                        data: Array.from({length: 24}, (_, i) => `${i}时`),
+                        data: Array.from({length: 24}, (_, i) => `${i}時`),
                         axisLabel: {
                             interval: 0
                         }
@@ -797,7 +797,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             stack: 'total',
                             barWidth: 16,   // 减小柱子宽度
                             barGap: '100%',
-                            barCategoryGap: '40%', // 调整类目间距
+                            barCategoryGap: '40%', // 调整类目間距
                             itemStyle: {
                                 color: '#5470c6'
                             },
@@ -818,7 +818,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             stack: 'total',
                             barWidth: 16,   // 减小柱子宽度
                             barGap: '100%',
-                            barCategoryGap: '40%', // 调整类目间距
+                            barCategoryGap: '40%', // 调整类目間距
                             itemStyle: {
                                 color: '#91cc75'
                             },
@@ -898,11 +898,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // 在设置日内时段分布图表的部分添加點擊事件
+    // 在设置日内時段分布图表的部分添加點擊事件
     hourlyChart.on('click', function(params) {
         if (params.componentType === 'series' && params.seriesName === '消费金额') {
-            const hour = params.dataIndex;  // 获取點擊的小时
-            const title = `${currentYear}年 ${hour}时消费明细`;
+            const hour = params.dataIndex;  // 获取點擊的小時
+            const title = `${currentYear}年 ${hour}時消费明细`;
             
             // 构建查询参数
             const queryParams = new URLSearchParams({
@@ -917,14 +917,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 queryParams.append('max_amount', '1000');
             }
             
-            // 获取该时段的交易记录
+            // 获取该時段的交易记录
             fetch(`/api/transactions?${queryParams}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.transactions && data.transactions.length > 0) {
                         showTransactionModal(title, data.transactions);
                     } else {
-                        showToast('该时段没有交易记录');
+                        showToast('该時段没有交易记录');
                     }
                 })
                 .catch(error => {

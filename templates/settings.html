@@ -296,7 +296,7 @@
     }
 }
 
-/* 添加计时器样式 */
+/* 添加计時器样式 */
 .session-timer {
     background: var(--hover-bg);
     padding: 8px 16px;
@@ -446,18 +446,18 @@
     <h2 class="upload-title">上傳账单文件</h2>
     <div class="session-timer">
         <i class="fas fa-clock"></i>
-        <span>会话剩余时间: <span id="timeRemaining">--:--</span></span>
+        <span>会话剩余時間: <span id="timeRemaining">--:--</span></span>
     </div>
     <p class="upload-description">
-        支持上傳支付宝账单CSV文件。请确保文件包含必要的字段：交易时间、交易分类、收/支、金额、商品说明、交易状态、交易对方。
+        支持上傳支付宝账单CSV文件。请确保文件包含必要的字段：交易時間、交易分类、收/支、金额、商品说明、交易状态、交易对方。
     </p>
     
     <div class="upload-guide">
         <h3>如何获取支付宝账单？</h3>
         <ol>
             <li>打开支付宝 App -> 我的 -> 账单</li>
-            <li>右上角 ... -> 开具交易流水证明 -> 用于個人对账 -> 申请</li>
-            <li>自定义时间范围（最长为一年） -> 填写邮箱 -> 下载账单</li>
+            <li>右上角 ... -> 开具交易流水证明 -> 用於個人对账 -> 申请</li>
+            <li>自定义時間范围（最长为一年） -> 填写邮箱 -> 下载账单</li>
             <li>申请记录中找到解压密码 -> 解压下载的文件，获取 CSV 文件</li>
             <li>按年份重命名为【alipay_record_2024.csv】格式</li>
         </ol>
@@ -659,7 +659,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // 修改计时器更新函数
+    // 修改计時器更新函数
     function updateTimer() {
         if (window.isRedirecting) return;
         
@@ -693,7 +693,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     }
     
-    // 在文件上傳成功时开始计时
+    // 在文件上傳成功時开始计時
     function handleUploadSuccess() {
         // 标记正在上傳状态
         localStorage.setItem('isUploading', 'true');
@@ -701,7 +701,7 @@ document.addEventListener('DOMContentLoaded', function() {
         setInterval(updateTimer, 1000);
     }
 
-    // 在页面加载时检查是否需要开始计时
+    // 在页面加载時检查是否需要开始计時
     if (localStorage.getItem('isUploading')) {
         updateTimer();
         setInterval(updateTimer, 1000);
@@ -720,7 +720,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     localStorage.removeItem('isUploading');
                     // 刷新文件列表
                     fileList.innerHTML = '';
-                    // 重置计时器显示
+                    // 重置计時器显示
                     document.getElementById('timeRemaining').textContent = '--:--';
                     // 显示成功提示
                     showToast('所有数据已清除');

@@ -187,8 +187,8 @@
 
         /* 修改主内容区域样式 */
         .content {
-            flex: 1;  /* 让内容区域填充剩余空间 */
-            margin-left: var(--sidebar-width);  /* 为侧边栏留出空间 */
+            flex: 1;  /* 让内容区域填充剩余空間 */
+            margin-left: var(--sidebar-width);  /* 为侧边栏留出空間 */
             padding: 20px;
             background: var(--bg-color);
             min-height: 100vh;
@@ -275,7 +275,7 @@
             position: fixed;
             left: 0;
             bottom: 24px;
-            width: var(--sidebar-width);  /* 与侧边栏宽度相同 */
+            width: var(--sidebar-width);  /* 與侧边栏宽度相同 */
             padding: 0 12px;  /* 添加内边距以确保按钮不会贴边 */
             display: flex;
             flex-direction: column;
@@ -327,7 +327,7 @@
             letter-spacing: -0.016em;
         }
 
-        /* 等宽字体（用于数字展示） */
+        /* 等宽字体（用於数字展示） */
         .monospace, .amount {
             font-family: var(--font-family-mono);
             font-feature-settings: "tnum";
@@ -365,7 +365,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 1100;  /* 增加 z-index，确保高于导航栏 */
+            z-index: 1100;  /* 增加 z-index，确保高於导航栏 */
         }
 
         .modal-content {
@@ -377,8 +377,8 @@
             max-height: 90vh;
             display: flex;
             flex-direction: column;
-            margin-left: var(--sidebar-width);  /* 添加这行，为侧边栏留出空间 */
-            margin-right: 20px;  /* 添加这行，右侧留出一些空间 */
+            margin-left: var(--sidebar-width);  /* 添加这行，为侧边栏留出空間 */
+            margin-right: 20px;  /* 添加这行，右侧留出一些空間 */
         }
 
         .modal-header {
@@ -886,7 +886,7 @@
         let allTransactions = [...transactions];  // 保存所有交易记录的副本
         let currentTransactions = [...transactions];
         
-        // 日期时间格式化函数
+        // 日期時間格式化函数
         function formatDateTime(dateStr) {
             try {
                 // 處理不同的日期格式
@@ -1062,7 +1062,7 @@
         }
     });
 
-    // 格式化时间
+    // 格式化時間
     function formatTime(seconds) {
         const minutes = Math.floor(seconds / 60);
         const remainingSeconds = seconds % 60;
@@ -1237,7 +1237,7 @@
                         
                         if (data.warning) {
                             timeDisplay.classList.add('warning');
-                            showToast('会话即将過期，请及时保存工作', 5000);
+                            showToast('会话即将過期，请及時保存工作', 5000);
                         }
                     } else {
                         timeDisplay.textContent = '--:--';
@@ -1254,10 +1254,10 @@
 
         // 启动会话检查
         function startSessionCheck() {
-            // 先停止已存在的定时器
+            // 先停止已存在的定時器
             stopSessionCheck();
             
-            // 只在需要检查的页面启动定时器
+            // 只在需要检查的页面启动定時器
             if (shouldCheckSession()) {
                 console.debug('Starting session check timer');
                 sessionCheckTimer = setInterval(checkSessionStatus, CHECK_INTERVAL);
@@ -1322,7 +1322,7 @@
             });
         }
 
-        // 页面加载时启动检查
+        // 页面加载時启动检查
         startSessionCheck();
     });
     </script>

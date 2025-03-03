@@ -18,7 +18,7 @@ def analyze_merchant_names():
                 for i, line in enumerate(lines):
                     if '交易状态' in line:
                         status_row = i
-                    if '交易时间' in line:
+                    if '交易時間' in line:
                         header_row = i
                         break
             
@@ -36,7 +36,7 @@ def analyze_merchant_names():
                 print(f"成功處理文件 {file}，包含 {len(merchants)} 個交易对方")
             
         except Exception as e:
-            print(f"處理文件 {file} 时出错: {str(e)}")
+            print(f"處理文件 {file} 時出错: {str(e)}")
     
     # 统计每個商家出现的次数
     merchant_counts = Counter(all_merchants)

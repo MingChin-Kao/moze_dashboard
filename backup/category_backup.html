@@ -82,10 +82,10 @@
     transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
-/* 展开时的分类选择面板 */
+/* 展开時的分类选择面板 */
 .category-expanded {
     position: absolute;
-    top: calc(100% + 8px); /* 保持原有间距 */
+    top: calc(100% + 8px); /* 保持原有間距 */
     left: 50%;
     transform: translateX(-50%) translateY(0);
     background: var(--bg-color);
@@ -106,10 +106,10 @@
 .category-expanded::before {
     content: '';
     position: absolute;
-    top: -8px; /* 与 margin-top 相同 */
+    top: -8px; /* 與 margin-top 相同 */
     left: 0;
     right: 0;
-    height: 8px; /* 填充间隔区域 */
+    height: 8px; /* 填充間隔区域 */
     background: transparent; /* 保持透明 */
 }
 
@@ -122,7 +122,7 @@
     max-width: 800px; /* 限制最大宽度 */
 }
 
-/* 当父容器被hover时显示展开面板 */
+/* 当父容器被hover時显示展开面板 */
 .category-selector:hover .category-expanded {
     opacity: 1;
     pointer-events: auto;
@@ -301,7 +301,7 @@
     height: 36px;  /* 限制高度 */
 }
 
-/* 修改时间控制区域样式 */
+/* 修改時間控制区域样式 */
 .time-controls {
     display: flex;
     align-items: center;
@@ -431,11 +431,11 @@
     color: var(--text-color);
 }
 
-/* 时间选择器样式 */
+/* 時間选择器样式 */
 .time-range-selector {
     display: flex;
     align-items: center;
-    gap: 16px;          /* 增加按钮间距 */
+    gap: 16px;          /* 增加按钮間距 */
 }
 
 .time-button {
@@ -570,7 +570,7 @@
 <div class="chart-grid">
     <div class="chart-card">
         <div class="chart-header">
-            <h2 class="chart-title">支出趋势</h2>
+            <h2 class="chart-title">支出趨勢</h2>
         </div>
         <div class="chart-container" id="trendChart"></div>
     </div>
@@ -579,7 +579,7 @@
 <div class="chart-grid">
     <div class="chart-card">
         <div class="chart-header">
-            <h2 class="chart-title">消费规律分析</h2>
+            <h2 class="chart-title">消费規律分析</h2>
         </div>
         <div class="chart-container" id="patternChart"></div>
     </div>
@@ -699,19 +699,19 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelector('.range-btn[data-range="year"]').classList.add('active');
     document.querySelector('.range-btn[data-range="month"]').classList.remove('active');
 
-    // 修改时间显示函数
+    // 修改時間显示函数
     function updateTimeDisplay() {
         const timeDisplay = document.getElementById('timeDisplay');
         const prevBtn = document.getElementById('prevTime');
         const nextBtn = document.getElementById('nextTime');
         
         if (currentTimeRange === 'all') {
-            timeDisplay.textContent = '全部时间';
-            // 在"所有"模式下禁用时间切换按钮
+            timeDisplay.textContent = '全部時間';
+            // 在"所有"模式下禁用時間切换按钮
             prevBtn.style.visibility = 'hidden';
             nextBtn.style.visibility = 'hidden';
         } else {
-            // 恢复时间切换按钮的显示
+            // 恢复時間切换按钮的显示
             prevBtn.style.visibility = 'visible';
             nextBtn.style.visibility = 'visible';
             
@@ -738,7 +738,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 b.classList.remove('active'));
             this.classList.add('active');
             
-            // 更新时间范围
+            // 更新時間范围
             currentTimeRange = range;
             
             // 更新显示
@@ -773,7 +773,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     }
     
-    // 更新时间控制按钮状态
+    // 更新時間控制按钮状态
     function updateTimeControls() {
         const prevBtn = document.getElementById('prevTime');
         const nextBtn = document.getElementById('nextTime');
@@ -802,11 +802,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // 修改时间切换按钮事件
+    // 修改時間切换按钮事件
     document.getElementById('prevTime').addEventListener('click', function() {
         if (currentTimeRange === 'year' && currentYear > Math.min(...availableYears)) {
             currentYear--;
-            // 切换年份时，设置月份为该年的最后一個月
+            // 切换年份時，设置月份为该年的最后一個月
             if (availableMonths[currentYear]) {
                 currentMonth = Math.max(...availableMonths[currentYear]);
             }
@@ -835,7 +835,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('nextTime').addEventListener('click', function() {
         if (currentTimeRange === 'year' && currentYear < Math.max(...availableYears)) {
             currentYear++;
-            // 切换年份时，设置月份为该年的第一個月
+            // 切换年份時，设置月份为该年的第一個月
             if (availableMonths[currentYear]) {
                 currentMonth = Math.min(...availableMonths[currentYear]);
             }
@@ -961,14 +961,14 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('expenseRatio').textContent = `${stats.expense_ratio}%`;
         document.getElementById('ratioTrend').textContent = stats.total_expense > 0 ? '占总支出比例' : '暂无数据';
         
-        // 根据时间范围更新月均支出和交易频率
+        // 根据時間范围更新月均支出和交易频率
         const monthlyAvgElement = document.getElementById('monthlyAvg');
         const monthlyTrendElement = document.getElementById('monthlyTrend');
         const frequencyElement = document.getElementById('frequency');
         const frequencyTrendElement = document.getElementById('frequencyTrend');
         
         if (currentTimeRange === 'all') {
-            // 所有时间范围
+            // 所有時間范围
             const yearCount = Math.ceil(stats.date_range / 365); // 总天数转换为年数
             const monthlyAvg = stats.total_expense / (stats.date_range / 30); // 按30天一個月计算
             monthlyAvgElement.textContent = `${formatMoney(monthlyAvg)} 元`;
@@ -1005,7 +1005,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // 检查是否有数据
         const hasData = data.trend.dates && data.trend.dates.length > 0;
         
-        // 支出趋势图配置
+        // 支出趨勢图配置
         const trendOption = {
             tooltip: {
                 trigger: 'axis',
@@ -1132,7 +1132,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }]
         };
 
-        // 消费规律分析图配置
+        // 消费規律分析图配置
         const patternOption = {
             tooltip: {
                 trigger: 'axis',
@@ -1152,7 +1152,7 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             xAxis: {
                 type: 'category',
-                data: data.pattern.hours.map(h => `${h}时`),
+                data: data.pattern.hours.map(h => `${h}時`),
                 axisLabel: {
                     interval: 0
                 }
@@ -1277,12 +1277,12 @@ document.addEventListener('DOMContentLoaded', function() {
         patternChart.setOption(patternOption, true);
         distributionChart.setOption(distributionOption, true);
 
-        // 为消费规律分析图添加點擊事件
+        // 为消费規律分析图添加點擊事件
         patternChart.off('click');
         patternChart.on('click', function(params) {
             if (params.componentType === 'series') {
                 const hour = parseInt(params.name);
-                const title = `${currentCategory} - ${hour}时段交易明细`;
+                const title = `${currentCategory} - ${hour}時段交易明细`;
                 
                 // 构建查询参数
                 const queryParams = new URLSearchParams({
@@ -1340,9 +1340,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 queryParams.append('min_amount', min.toString());
                 queryParams.append('max_amount', max === Infinity ? 'Infinity' : max.toString());
 
-                // 根据当前时间范围添加不同的参数
+                // 根据当前時間范围添加不同的参数
                 if (currentTimeRange === 'all') {
-                    title = `${currentCategory} - ${range}元交易明细（所有时间）`;
+                    title = `${currentCategory} - ${range}元交易明细（所有時間）`;
                 } else if (currentTimeRange === 'year') {
                     title = `${currentCategory} - ${range}元交易明细（${currentYear}年）`;
                     queryParams.append('year', currentYear.toString());
@@ -1352,7 +1352,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     queryParams.append('month', currentMonth.toString());
                 }
 
-                // 添加时间范围参数
+                // 添加時間范围参数
                 queryParams.append('range', currentTimeRange);
 
                 // 获取交易记录
@@ -1373,7 +1373,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // 为趋势图添加點擊事件
+        // 为趨勢图添加點擊事件
         trendChart.off('click');
         trendChart.on('click', function(params) {
             if (params.componentType === 'series' && params.seriesName === '支出金额') {
@@ -1385,7 +1385,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     category: currentCategory
                 });
 
-                // 根据当前时间范围添加不同的参数
+                // 根据当前時間范围添加不同的参数
                 if (currentTimeRange === 'all') {
                     title = `${currentCategory} - ${date}年交易明细`;
                     queryParams.append('year', date);

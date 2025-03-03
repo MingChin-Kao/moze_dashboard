@@ -241,7 +241,7 @@
     display: none;  /* 移除渐变背景 */
 }
 
-/* 修改悬停效果，与商家列表保持一致 */
+/* 修改悬停效果，與商家列表保持一致 */
 .stat-item:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
@@ -505,7 +505,7 @@
 }
 
 .help-icon:hover i {
-    color: var(--primary-color);  /* 悬停时改变图标颜色 */
+    color: var(--primary-color);  /* 悬停時改变图标颜色 */
 }
 
 /* 修改自定义提示框样式 */
@@ -611,7 +611,7 @@
         <div class="card-content">
             <div class="scenario-tabs">
                 <button class="tab-btn active" data-type="channel">消费渠道</button>
-                <button class="tab-btn" data-type="time">时段分布</button>
+                <button class="tab-btn" data-type="time">時段分布</button>
                 <button class="tab-btn" data-type="amount">金额层级</button>
                 <button class="tab-btn" data-type="payment">支付方式</button>
             </div>
@@ -723,7 +723,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <i class="fas fa-clock"></i>
                 </div>
                 <div class="feature-content">
-                    <div class="feature-title">消费时间</div>
+                    <div class="feature-title">消费時間</div>
                     <div class="feature-description">${formatTimePattern(data.time_pattern)}</div>
                 </div>
             </div>
@@ -741,7 +741,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <i class="fas fa-chart-line"></i>
                 </div>
                 <div class="feature-content">
-                    <div class="feature-title">消费规律</div>
+                    <div class="feature-title">消费規律</div>
                     <div class="feature-description">${formatPattern(data.spending_pattern)}</div>
                 </div>
             </div>
@@ -759,8 +759,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 修改格式化函数，更精确地控制强调部分
     function formatTimePattern(text) {
-        // 只强调具体时间段
-        return text.replace(/(夜间|早起|日间)/g, '<span class="highlight">$1</span>');
+        // 只强调具体時間段
+        return text.replace(/(夜間|早起|日間)/g, '<span class="highlight">$1</span>');
     }
 
     function formatPreference(text) {
@@ -771,7 +771,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function formatPattern(text) {
         // 只强调关键描述词
-        return text.replace(/(非常有规律|理性|较为均衡|比较随性)/g, '<span class="highlight">$1</span>');
+        return text.replace(/(非常有規律|理性|較为均衡|比較随性)/g, '<span class="highlight">$1</span>');
     }
 
     function formatPower(text) {
@@ -779,7 +779,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return text.replace(
             /日均消费([0-9]+)元/g, '日均消费<span class="amount">$1</span>元'
         ).replace(
-            /，属于(高|中等|理性)消费人群/g, '，属于<span class="highlight">$1</span>消费人群'
+            /，属於(高|中等|理性)消费人群/g, '，属於<span class="highlight">$1</span>消费人群'
         );
     }
     
@@ -814,7 +814,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // 按类别分组数据
         const groupedData = {
             'channel': data.filter(item => item.category === '渠道'),
-            'time': data.filter(item => item.category === '时段'),
+            'time': data.filter(item => item.category === '時段'),
             'amount': data.filter(item => item.category === '层级'),
             'payment': paymentData.map(item => ({
                 name: item.name,
@@ -841,7 +841,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 value: Math.abs(item.value)
             }));
 
-            // 计算总金额用于百分比
+            // 计算总金额用於百分比
             const total = chartData.reduce((sum, item) => sum + (item.value || 0), 0);
 
             // 如果 total = 0，清除图表

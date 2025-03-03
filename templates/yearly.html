@@ -18,7 +18,7 @@
 
 .page-header {
     display: grid;
-    grid-template-columns: 1fr auto 1fr; /* 三列布局：左侧、中间（年份）、右侧 */
+    grid-template-columns: 1fr auto 1fr; /* 三列布局：左侧、中間（年份）、右侧 */
     align-items: center;
     padding: 0 20px;
     position: sticky;
@@ -247,7 +247,7 @@
 
 {% block content %}
 <div class="page-header">
-    <h1 class="page-title">年度总览</h1>
+    <h1 class="page-title">年度總覽</h1>
     <div class="year-controls">
         <button id="prevYear" class="year-button">
             <i class="fas fa-chevron-left"></i>
@@ -347,12 +347,12 @@ function updateComparison(element, change, changeRate, label, isCount = false) {
     const icon = element.querySelector('.trend-icon');
     const value = element.querySelector('.change-value');
     
-    // 设置显示阈值，小于这個值就显示"基本持平"
+    // 设置显示阈值，小於这個值就显示"基本持平"
     const threshold = isCount ? 5 : 100; // 金额阈值100元，筆数阈值5筆
     
     if (change === null || change === undefined) {
         icon.className = 'fas fa-minus trend-icon neutral';
-        value.textContent = '暂无对比数据';
+        value.textContent = '暂無對比資料';
         return;
     }
     
@@ -453,7 +453,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     }
     
-    // 添加窗口大小变化时重新调整图表大小的處理
+    // 添加窗口大小变化時重新调整图表大小的處理
     window.addEventListener('resize', function() {
         if (trendChart) {
             trendChart.resize();
@@ -475,14 +475,14 @@ document.addEventListener('DOMContentLoaded', function() {
             if (availableYears.length > 0) {
                 currentYear = availableYears[0];
                 loadData(currentYear);
-                updateYearButtons();  // 初始化时更新按钮状态
+                updateYearButtons();  // 初始化時更新按钮状态
             }
         })
         .catch(error => {
             console.error('Error loading available years:', error);
             currentYear = new Date().getFullYear();
             loadData(currentYear);
-            updateYearButtons();  // 出错时也更新按钮状态
+            updateYearButtons();  // 出错時也更新按钮状态
         });
         
     // 修改切换按钮事件處理部分
@@ -502,7 +502,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const categoryTitle = document.querySelector('.card:last-child .chart-title');
             
             if (trendTitle) {
-                trendTitle.textContent = `${currentType === 'expense' ? '支出' : '收入'}趋势`;
+                trendTitle.textContent = `${currentType === 'expense' ? '支出' : '收入'}趨勢`;
             }
             if (categoryTitle) {
                 categoryTitle.textContent = `${currentType === 'expense' ? '支出' : '收入'}分类`;
@@ -518,7 +518,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // 更新收支差额卡片
         const balance = stats.balance;
         document.getElementById('yearBalance').textContent = `${formatMoney(Math.abs(balance))} 元`;
-        document.getElementById('balanceStatus').textContent = balance >= 0 ? '收大于支' : '支大于收';
+        document.getElementById('balanceStatus').textContent = balance >= 0 ? '收大於支' : '支大於收';
         
         // 修改这里：根据收支情况显示不同的比例文本
         const expenseRatio = (stats.total_expense / stats.total_income * 100).toFixed(1);
@@ -620,7 +620,14 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 更新图表
     function updateCharts(data) {
-        // 趋势图配置
+        // 根據數據長度調整顏色
+        function getDynamicColor(index, total) {
+            const colors = [
+                '#6A5ACD', '#4682B4', '#5F9EA0', '#8FBC8F', '#DDA0DD', '#FFB6C1', '#CD853F', '#708090'
+            ];
+            return colors[index % colors.length];
+        }
+        // 趨勢图配置
         const trendOption = {
             title: {
                 text: '',  // 移除标题
@@ -770,7 +777,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         name: name,
                         value: value,
                         itemStyle: {
-                            color: window.getCategoryColor(name)
+                            color: getDynamicColor(index, categoryData.names.length)
                         },
                         label: {
                             show: percent > 2
@@ -786,7 +793,7 @@ document.addEventListener('DOMContentLoaded', function() {
         trendChart.setOption(trendOption);
         categoryPieChart.setOption(pieOption);
 
-        // 为趋势图添加點擊事件
+        // 为趨勢图添加點擊事件
         trendChart.off('click');  // 移除之前的事件绑定
         trendChart.on('click', function(params) {
             if (params.componentType === 'series') {

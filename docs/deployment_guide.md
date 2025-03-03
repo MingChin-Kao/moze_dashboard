@@ -184,7 +184,7 @@ logging.basicConfig(
 )
 ~~~
 
-### 4.2 定时任务
+### 4.2 定時任务
 创建清理脚本 `cleanup.py`：
 ~~~python
 import os
@@ -192,7 +192,7 @@ import shutil
 from datetime import datetime, timedelta
 
 def cleanup_old_files():
-    """清理超過24小时的临时文件"""
+    """清理超過24小時的临時文件"""
     tmp_dir = './tmp/alipay_analysis'
     threshold = datetime.now() - timedelta(hours=24)
     
@@ -248,7 +248,7 @@ Talisman(app,
 ### 6.1 常见问题
 - 文件权限问题
 - 内存使用過高
-- 连接超时
+- 连接超時
 - 日志写入失败
 
 ### 6.2 排查步骤

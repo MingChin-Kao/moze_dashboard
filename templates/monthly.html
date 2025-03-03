@@ -181,7 +181,7 @@
 
 /* 图表容器样式 */
 .chart-grid {
-    margin-bottom: 24px;  /* 增加底部间距 */
+    margin-bottom: 24px;  /* 增加底部間距 */
 }
 
 .chart-card {
@@ -270,7 +270,7 @@
         </div>
         <div class="comparison">
             <i class="fas fa-arrow-up trend-icon up"></i>
-            <span class="change-value">较上月增加 0 元</span>
+            <span class="change-value">較上月增加 0 元</span>
         </div>
     </div>
     <div class="stat-card">
@@ -282,7 +282,7 @@
         </div>
         <div class="comparison">
             <i class="fas fa-arrow-down trend-icon down"></i>
-            <span class="change-value">较上月减少 0 元</span>
+            <span class="change-value">較上月减少 0 元</span>
         </div>
     </div>
     <div class="stat-card">
@@ -294,7 +294,7 @@
         </div>
         <div class="comparison">
             <i class="fas fa-arrow-up trend-icon up"></i>
-            <span class="change-value">较上月增加 0 元</span>
+            <span class="change-value">較上月增加 0 元</span>
         </div>
     </div>
     <div class="stat-card">
@@ -306,7 +306,7 @@
         </div>
         <div class="comparison">
             <i class="fas fa-minus trend-icon neutral"></i>
-            <span class="change-value">与上月基本持平</span>
+            <span class="change-value">與上月基本持平</span>
         </div>
     </div>
 </div>
@@ -315,7 +315,7 @@
     <div class="chart-card">
         <div class="chart-header">
             <div class="chart-title-row">
-                <h2 class="chart-title">收支趋势</h2>
+                <h2 class="chart-title">收支趨勢</h2>
                 <div class="chart-toggle">
                     <button class="toggle-btn active" data-type="expense">
                         <i class="fas fa-arrow-up"></i>
@@ -473,7 +473,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // 更新收支差额卡片
         const balance = stats.balance;
         document.getElementById('monthBalance').textContent = `${formatMoney(Math.abs(balance))} 元`;
-        document.getElementById('balanceStatus').textContent = balance >= 0 ? '收大于支' : '支大于收';
+        document.getElementById('balanceStatus').textContent = balance >= 0 ? '收大於支' : '支大於收';
         
         // 修改这里：统一使用 toFixed(1) 显示一位小数
         const expenseRatio = (stats.total_expense / stats.total_income * 100).toFixed(1);
@@ -533,10 +533,16 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateCharts(data) {
         if (!data) return;
         
+        function getDynamicColor(index, total) {
+            const colors = [
+                '#6A5ACD', '#4682B4', '#5F9EA0', '#8FBC8F', '#DDA0DD', '#FFB6C1', '#CD853F', '#708090'
+            ];
+            return colors[index % colors.length];
+        }
         // 获取当前类型的日期数据
         const dailyData = data.daily_data[currentType];
         
-        // 趋势图配置
+        // 趨勢图配置
         const trendOption = {
             tooltip: {
                 trigger: 'axis',
@@ -636,7 +642,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     name: name,
                     value: categoryData.amounts[index],
                     itemStyle: {
-                        color: window.getCategoryColor(name)
+                        color: getDynamicColor(index, categoryData.names.length)
                     },
                     label: {
                         show: (categoryData.amounts[index] / total * 100) > 2,
@@ -655,7 +661,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }]
         };
         
-        // 修改趋势图點擊事件
+        // 修改趨勢图點擊事件
         trendChart.off('click');  // 移除之前的事件绑定
         trendChart.on('click', function(params) {
             if (params.componentType === 'series') {
@@ -756,7 +762,7 @@ function updateComparison(element, change, changeRate, label, isCount = false) {
     const icon = element.querySelector('.trend-icon');
     const value = element.querySelector('.change-value');
     
-    // 设置显示阈值，小于这個值就显示"基本持平"
+    // 设置显示阈值，小於这個值就显示"基本持平"
     const threshold = isCount ? 5 : 100; // 金额阈值100元，筆数阈值5筆
     
     if (change === null || change === undefined) {
@@ -767,11 +773,11 @@ function updateComparison(element, change, changeRate, label, isCount = false) {
     
     if (Math.abs(change) < threshold) {
         icon.className = 'fas fa-minus trend-icon neutral';
-        value.textContent = '与上月基本持平';
+        value.textContent = '與上月基本持平';
     } else {
         if (change > 0) {
             icon.className = 'fas fa-arrow-up trend-icon up';
-            let text = `较上月增加 ${isCount ? Math.abs(change) + ' 筆' : formatMoney(Math.abs(change)) + ' 元'}`;
+            let text = `較上月增加 ${isCount ? Math.abs(change) + ' 筆' : formatMoney(Math.abs(change)) + ' 元'}`;
             if (changeRate !== null && changeRate !== undefined) {
                 // 修改这里：使用 toFixed(1) 显示一位小数
                 text += ` (${changeRate > 0 ? '+' : ''}${changeRate.toFixed(1)}%)`;
@@ -779,7 +785,7 @@ function updateComparison(element, change, changeRate, label, isCount = false) {
             value.textContent = text;
         } else {
             icon.className = 'fas fa-arrow-down trend-icon down';
-            let text = `较上月减少 ${isCount ? Math.abs(change) + ' 筆' : formatMoney(Math.abs(change)) + ' 元'}`;
+            let text = `較上月减少 ${isCount ? Math.abs(change) + ' 筆' : formatMoney(Math.abs(change)) + ' 元'}`;
             if (changeRate !== null && changeRate !== undefined) {
                 // 修改这里：使用 toFixed(1) 显示一位小数
                 text += ` (${changeRate.toFixed(1)}%)`;

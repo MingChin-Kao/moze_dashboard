@@ -25,7 +25,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # 添加文件上傳配置
-UPLOAD_FOLDER = './tmp/alipay_analysis'  # 临时文件根目录
+UPLOAD_FOLDER = './tmp/alipay_analysis'  # 临時文件根目录
 ALLOWED_EXTENSIONS = {'csv'}
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -35,7 +35,7 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 def get_session_dir():
-    """获取当前会话的临时目录"""
+    """获取当前会话的临時目录"""
     if 'user_id' not in session:
         session['user_id'] = str(uuid.uuid4())
     
@@ -66,7 +66,7 @@ def load_alipay_data():
                         for i, line in enumerate(lines):
                             if '交易状态' in line:
                                 status_row = i
-                            if '交易时间' in line:
+                            if '交易時間' in line:
                                 header_row = i
                                 break
                     
@@ -78,9 +78,9 @@ def load_alipay_data():
                         status_column = status_df.columns[0]
                         
                         # 数据预處理
-                        df['交易时间'] = pd.to_datetime(df['交易时间'])
-                        df['月份'] = df['交易时间'].dt.strftime('%Y-%m')
-                        df['日期'] = df['交易时间'].dt.strftime('%Y-%m-%d')
+                        df['交易時間'] = pd.to_datetime(df['交易時間'])
+                        df['月份'] = df['交易時間'].dt.strftime('%Y-%m')
+                        df['日期'] = df['交易時間'].dt.strftime('%Y-%m-%d')
                         
                         # 标记交易状态
                         df['是否退款'] = df[status_column].isin(['退款成功', '交易关闭'])
@@ -97,7 +97,7 @@ def load_alipay_data():
         
         # 合并所有数据
         combined_df = pd.concat(all_data, ignore_index=True)
-        combined_df = combined_df.sort_values('交易时间')
+        combined_df = combined_df.sort_values('交易時間')
         
         return combined_df
         
@@ -106,7 +106,7 @@ def load_alipay_data():
         raise
 
 def validate_dataframe(df):
-    required_columns = ['交易时间', '收/支', '金额', '交易分类', '商品说明']
+    required_columns = ['交易時間', '收/支', '金额', '交易分类', '商品说明']
     missing_columns = [col for col in required_columns if col not in df.columns]
     if missing_columns:
         raise ValueError(f"数据缺少必需列: {', '.join(missing_columns)}")
@@ -186,7 +186,7 @@ def get_analysis():
         # 获取年份参数
         year = request.args.get('year', type=int)
         if year:
-            df = df[df['交易时间'].dt.year == year]
+            df = df[df['交易時間'].dt.year == year]
         
         # 商家分析
         merchant_analysis = analyze_merchants(df)
@@ -226,7 +226,7 @@ def monthly_analysis():
     # 按月份分组计算各项指标
     monthly_stats = expense_df.groupby('月份').agg({
         '金额': ['sum', 'count', 'mean'],  # 总额、筆数、平均值
-        '交易时间': lambda x: len(x.dt.date.unique())  # 有交易的天数
+        '交易時間': lambda x: len(x.dt.date.unique())  # 有交易的天数
     }).round(2)
     
     # 重命名列
@@ -306,13 +306,13 @@ def get_transactions():
             df = df[df['收/支'] == type]  # 根据收入/支出类型筛选
         
         if year:
-            df = df[df['交易时间'].dt.year == year]
+            df = df[df['交易時間'].dt.year == year]
         if month:
-            df = df[df['交易时间'].dt.month == month]
+            df = df[df['交易時間'].dt.month == month]
         if date:
             df = df[df['日期'] == date]
         if hour is not None:
-            df = df[df['交易时间'].dt.hour == hour]
+            df = df[df['交易時間'].dt.hour == hour]
         if category:
             df = df[df['交易分类'] == category]
         if min_amount:
@@ -326,8 +326,8 @@ def get_transactions():
         # 排除退款交易
         df = df[~df['是否退款']]
         
-        # 按时间倒序排序
-        df = df.sort_values('交易时间', ascending=False)
+        # 按時間倒序排序
+        df = df.sort_values('交易時間', ascending=False)
         
         # 计算总记录数和总页数
         total_records = len(df)
@@ -347,7 +347,7 @@ def get_transactions():
         transactions = []
         for _, row in page_df.iterrows():
             transactions.append({
-                'time': row['交易时间'].strftime('%Y-%m-%d %H:%M:%S'),
+                'time': row['交易時間'].strftime('%Y-%m-%d %H:%M:%S'),
                 'description': str(row['商品说明']),
                 'category': str(row['交易分类']),
                 'type': str(row['收/支']),
@@ -369,7 +369,7 @@ def get_transactions():
         })
         
     except Exception as e:
-        logger.error(f"获取交易记录时出错: {str(e)}", exc_info=True)
+        logger.error(f"获取交易记录時出错: {str(e)}", exc_info=True)
         return jsonify({
             'success': False,
             'error': f'获取交易记录失败: {str(e)}'
@@ -402,7 +402,7 @@ def summary():
     display_month = current_month if current_month_expense is not None else latest_month
     display_expense = current_month_expense if current_month_expense is not None else latest_month_expense
     
-    # 计算环比变化（与上一個月相比）
+    # 计算环比变化（與上一個月相比）
     if len(monthly_expenses) > 1:
         prev_month_expense = monthly_expenses.iloc[-2]
     else:
@@ -439,7 +439,7 @@ def daily_data():
             
         # 如果指定了年份，過滤对应年份的数据
         if year:
-            df = df[df['交易时间'].dt.year == year]
+            df = df[df['交易時間'].dt.year == year]
         
         # 排除"不计收支"的交易
         df = df[df['收/支'].isin(['收入', '支出'])]
@@ -447,7 +447,7 @@ def daily_data():
         # 计算每日数据
         daily_data = df.groupby(['日期', '收/支']).agg({
             '金额': 'sum',
-            '交易时间': 'count'
+            '交易時間': 'count'
         }).reset_index()
         
         # 准备热力图数据
@@ -469,7 +469,7 @@ def daily_data():
                 income_data.append([date_str, float(income['金额'].iloc[0])])
                 
             # 交易筆数 - 收入和支出的总和
-            transaction_count = group['交易时间'].sum()
+            transaction_count = group['交易時間'].sum()
             transaction_data.append([date_str, int(transaction_count)])
         
         # 计算分位数
@@ -511,12 +511,12 @@ def category_detail(month, category):
         (df['交易分类'] == category) & 
         (df['收/支'] == '支出')
     ].sort_values('金额', ascending=False)[
-        ['交易时间', '商品说明', '交易对方', '金额', '交易状态']
+        ['交易時間', '商品说明', '交易对方', '金额', '交易状态']
     ].to_dict('records')
     
     # 格式化数据
     formatted_details = [{
-        'time': detail['交易时间'].strftime('%Y-%m-%d %H:%M:%S'),
+        'time': detail['交易時間'].strftime('%Y-%m-%d %H:%M:%S'),
         'description': detail['商品说明'],
         'counterparty': detail['交易对方'],  # 添加交易对方
         'amount': round(float(detail['金额']), 2),
@@ -549,8 +549,8 @@ def get_top_transactions():
         transactions = []
         for _, row in top_transactions.iterrows():
             transactions.append({
-                'time': row['交易时间'].strftime('%Y-%m-%d %H:%M:%S'),
-                'date': row['交易时间'].strftime('%Y-%m-%d'),
+                'time': row['交易時間'].strftime('%Y-%m-%d %H:%M:%S'),
+                'date': row['交易時間'].strftime('%Y-%m-%d'),
                 'category': row['交易分类'],
                 'description': row['商品说明'],
                 'amount': float(row['金额']),
@@ -564,7 +564,7 @@ def get_top_transactions():
         })
         
     except Exception as e:
-        logger.error(f"获取大额交易记录时出错: {str(e)}", exc_info=True)
+        logger.error(f"获取大额交易记录時出错: {str(e)}", exc_info=True)
         return jsonify({
             'success': False,
             'error': f'获取大额交易记录失败: {str(e)}'
@@ -583,7 +583,7 @@ def category_trend(category):
     # 按月份分组计算各项指标
     monthly_stats = category_df.groupby('月份').agg({
         '金额': ['sum', 'count', 'mean'],  # 总金额、交易次数、平均金额
-        '交易时间': lambda x: len(x.dt.date.unique())  # 有交易的天数
+        '交易時間': lambda x: len(x.dt.date.unique())  # 有交易的天数
     }).round(2)
     
     # 重命名列
@@ -625,7 +625,7 @@ def category_trend(category):
 
 @app.route('/api/time_analysis')
 def time_analysis():
-    """获取时间分析数据，支持年份筛选"""
+    """获取時間分析数据，支持年份筛选"""
     try:
         df = load_alipay_data()
         
@@ -638,7 +638,7 @@ def time_analysis():
         
         # 如果指定了年份，過滤对应年份的数据
         if year:
-            expense_df = expense_df[expense_df['交易时间'].dt.year == year]
+            expense_df = expense_df[expense_df['交易時間'].dt.year == year]
             
         # 根据筛选条件過滤数据 - 移到这里，在计算统计数据之前過滤
         if filter_type == 'large':
@@ -646,24 +646,24 @@ def time_analysis():
         elif filter_type == 'small':
             expense_df = expense_df[expense_df['金额'] <= 1000]
         
-        # 1. 计算日内时段分布
-        expense_df['hour'] = expense_df['交易时间'].dt.hour
+        # 1. 计算日内時段分布
+        expense_df['hour'] = expense_df['交易時間'].dt.hour
         hourly_stats = expense_df.groupby('hour').agg({
             '金额': 'sum',
-            '交易时间': 'count'
+            '交易時間': 'count'
         }).reset_index()
         
-        # 确保所有小时都有数据，没有数据的填充0
+        # 确保所有小時都有数据，没有数据的填充0
         all_hours = pd.DataFrame({'hour': range(24)})
         hourly_stats = pd.merge(all_hours, hourly_stats, on='hour', how='left').fillna(0)
         
         hourly_data = {
             'amounts': hourly_stats['金额'].round(2).tolist(),
-            'counts': hourly_stats['交易时间'].tolist()
+            'counts': hourly_stats['交易時間'].tolist()
         }
         
         # 2. 计算工作日/周末分布
-        expense_df['is_weekend'] = expense_df['交易时间'].dt.dayofweek.isin([5, 6])
+        expense_df['is_weekend'] = expense_df['交易時間'].dt.dayofweek.isin([5, 6])
         category_weekday = {}
         
         for category in expense_df['交易分类'].unique():
@@ -727,7 +727,7 @@ def filtered_monthly_analysis():
     # 使用過滤后的数据计算月度统计
     monthly_stats = expense_df.groupby('月份').agg({
         '金额': ['sum', 'count', 'mean'],  # 总金额、交易次数、平均金额
-        '交易时间': lambda x: len(x.dt.date.unique())  # 有交易的天数
+        '交易時間': lambda x: len(x.dt.date.unique())  # 有交易的天数
     }).round(2)
     
     monthly_stats.columns = ['total', 'count', 'avg_amount', 'active_days']
@@ -783,10 +783,10 @@ def get_overview_data():
         year = request.args.get('year', None)
         
         if year is None:
-            year = str(df['交易时间'].max().year)
+            year = str(df['交易時間'].max().year)
         
         # 筛选指定年份的数据
-        year_df = df[df['交易时间'].dt.year == int(year)]
+        year_df = df[df['交易時間'].dt.year == int(year)]
         
         # 根据金额筛选数据
         if filter_type == 'large':
@@ -795,7 +795,7 @@ def get_overview_data():
             year_df = year_df[year_df['金额'].abs() < 1000]
         
         # 获取所有可用的年份列表
-        available_years = sorted(df['交易时间'].dt.year.unique().tolist(), reverse=True)
+        available_years = sorted(df['交易時間'].dt.year.unique().tolist(), reverse=True)
         
         # 计算年度统计数据
         expense_df = year_df[
@@ -905,7 +905,7 @@ def get_monthly_data():
             **current_stats,  # 保持原有统计数据
         }
         
-        # 只有当存在上月数据时才计算环比
+        # 只有当存在上月数据時才计算环比
         if not last_month_df.empty:
             last_month_stats = calculate_monthly_stats(last_month_df)
             
@@ -985,7 +985,7 @@ def get_monthly_data():
         })
         
     except Exception as e:
-        logger.error(f"處理月度数据时出错: {str(e)}", exc_info=True)
+        logger.error(f"處理月度数据時出错: {str(e)}", exc_info=True)
         return jsonify({'error': str(e)}), 500
 
 def calculate_monthly_stats(df):
@@ -1038,16 +1038,16 @@ def yearly_data():
         logger.info(f"数据加载完成，总行数: {len(df)}")
         
         # 获取所有可用年份并转换为普通 Python 列表
-        available_years = sorted(df['交易时间'].dt.year.unique().tolist(), reverse=True)
+        available_years = sorted(df['交易時間'].dt.year.unique().tolist(), reverse=True)
         
         # 从请求参数获取年份，如果没有指定则使用最新的可用年份
         year = request.args.get('year', available_years[0], type=int)
         logger.info(f"请求年度数据: {year}")
         
-        current_year_df = df[df['交易时间'].dt.year == year].copy()
+        current_year_df = df[df['交易時間'].dt.year == year].copy()
         logger.info(f"当前年份数据行数: {len(current_year_df)}")
         
-        last_year_df = df[df['交易时间'].dt.year == (year - 1)].copy()
+        last_year_df = df[df['交易時間'].dt.year == (year - 1)].copy()
         logger.info(f"上一年数据行数: {len(last_year_df)}")
         
         # 获取筛选参数
@@ -1069,7 +1069,7 @@ def yearly_data():
             **current_stats,  # 保持原有统计数据
         }
         
-        # 只有当存在上一年数据时才计算环比
+        # 只有当存在上一年数据時才计算环比
         if len(last_year_df) > 0:
             print("发现上一年数据，计算环比...")
             last_year_stats = calculate_yearly_stats(last_year_df)
@@ -1140,7 +1140,7 @@ def yearly_data():
         })
         
     except Exception as e:
-        logger.error(f"處理年度数据时出错: {str(e)}", exc_info=True)
+        logger.error(f"處理年度数据時出错: {str(e)}", exc_info=True)
         return jsonify({'error': str(e)}), 500
 
 def calculate_change_rate(current, previous):
@@ -1217,13 +1217,13 @@ def category_analysis():
             (~df['是否退款'])
         ]
         
-        # 根据时间范围過滤数据
+        # 根据時間范围過滤数据
         if time_range == 'year' and year:
-            expense_df = expense_df[expense_df['交易时间'].dt.year == int(year)]
+            expense_df = expense_df[expense_df['交易時間'].dt.year == int(year)]
         elif time_range == 'month' and year and month:
             expense_df = expense_df[
-                (expense_df['交易时间'].dt.year == int(year)) & 
-                (expense_df['交易时间'].dt.month == int(month))
+                (expense_df['交易時間'].dt.year == int(year)) & 
+                (expense_df['交易時間'].dt.month == int(month))
             ]
         
         # 按金额范围過滤
@@ -1265,7 +1265,7 @@ def category_analysis():
         
         # 计算日期范围
         if time_range == 'all':
-            date_range = (category_df['交易时间'].max() - category_df['交易时间'].min()).days + 1
+            date_range = (category_df['交易時間'].max() - category_df['交易時間'].min()).days + 1
         elif time_range == 'year':
             date_range = 365
         else:
@@ -1280,34 +1280,34 @@ def category_analysis():
         if time_range == 'all':
             total_all_expense = expense_df['金额'].sum()
         elif time_range == 'year':
-            total_all_expense = expense_df[expense_df['交易时间'].dt.year == int(year)]['金额'].sum()
+            total_all_expense = expense_df[expense_df['交易時間'].dt.year == int(year)]['金额'].sum()
         else:
             total_all_expense = expense_df[
-                (expense_df['交易时间'].dt.year == int(year)) & 
-                (expense_df['交易时间'].dt.month == int(month))
+                (expense_df['交易時間'].dt.year == int(year)) & 
+                (expense_df['交易時間'].dt.month == int(month))
             ]['金额'].sum()
         
         expense_ratio = round((total_expense / total_all_expense * 100), 2) if total_all_expense > 0 else 0
         
-        # 按时间分组统计
+        # 按時間分组统计
         if time_range == 'all':
             # 按年份分组
-            grouped = category_df.groupby(category_df['交易时间'].dt.strftime('%Y'))
-            total_grouped = expense_df.groupby(expense_df['交易时间'].dt.strftime('%Y'))
+            grouped = category_df.groupby(category_df['交易時間'].dt.strftime('%Y'))
+            total_grouped = expense_df.groupby(expense_df['交易時間'].dt.strftime('%Y'))
         elif time_range == 'year':
             # 按月份分组
-            grouped = category_df.groupby(category_df['交易时间'].dt.strftime('%Y-%m'))
-            total_grouped = expense_df.groupby(expense_df['交易时间'].dt.strftime('%Y-%m'))
+            grouped = category_df.groupby(category_df['交易時間'].dt.strftime('%Y-%m'))
+            total_grouped = expense_df.groupby(expense_df['交易時間'].dt.strftime('%Y-%m'))
         else:
             # 按日期分组
-            grouped = category_df.groupby(category_df['交易时间'].dt.strftime('%Y-%m-%d'))
-            total_grouped = expense_df.groupby(expense_df['交易时间'].dt.strftime('%Y-%m-%d'))
+            grouped = category_df.groupby(category_df['交易時間'].dt.strftime('%Y-%m-%d'))
+            total_grouped = expense_df.groupby(expense_df['交易時間'].dt.strftime('%Y-%m-%d'))
         
         time_series = grouped['金额'].sum().round(2)
         total_series = total_grouped['金额'].sum().round(2)
         transaction_counts = grouped.size()
         
-        # 计算每個时间点的占比
+        # 计算每個時間点的占比
         ratios = []
         for date in time_series.index:
             if date in total_series.index and total_series[date] > 0:
@@ -1316,8 +1316,8 @@ def category_analysis():
                 ratio = 0
             ratios.append(ratio)
         
-        # 计算消费规律
-        hour_pattern = category_df.groupby(category_df['交易时间'].dt.hour)['金额'].agg([
+        # 计算消费規律
+        hour_pattern = category_df.groupby(category_df['交易時間'].dt.hour)['金额'].agg([
             ('count', 'count'),
             ('sum', 'sum')
         ]).round(2)
@@ -1360,7 +1360,7 @@ def category_analysis():
         })
         
     except Exception as e:
-        logger.error(f"處理分类分析数据时出错: {str(e)}", exc_info=True)
+        logger.error(f"處理分类分析数据時出错: {str(e)}", exc_info=True)
         return jsonify({'error': str(e)}), 500
 
 @app.route('/api/available_dates')
@@ -1370,8 +1370,8 @@ def get_available_dates():
         
         # 获取所有可用的年份和月份
         dates = pd.DataFrame({
-            'year': df['交易时间'].dt.year,
-            'month': df['交易时间'].dt.month
+            'year': df['交易時間'].dt.year,
+            'month': df['交易時間'].dt.month
         })
         
         # 按年份分组获取每年的可用月份
@@ -1383,12 +1383,12 @@ def get_available_dates():
         return jsonify({
             'years': sorted(dates['year'].unique().tolist()),
             'months': available_months,
-            'min_date': df['交易时间'].min().strftime('%Y-%m-%d'),
-            'max_date': df['交易时间'].max().strftime('%Y-%m-%d')
+            'min_date': df['交易時間'].min().strftime('%Y-%m-%d'),
+            'max_date': df['交易時間'].max().strftime('%Y-%m-%d')
         })
         
     except Exception as e:
-        logger.error(f"获取可用日期时出错: {str(e)}", exc_info=True)
+        logger.error(f"获取可用日期時出错: {str(e)}", exc_info=True)
         return jsonify({'error': str(e)}), 500
 
 @app.route('/settings')
@@ -1420,7 +1420,7 @@ def upload_file():
                 # 清除数据缓存
                 load_alipay_data.cache_clear()
                 
-                # 更新会话开始时间（在最后一個文件上傳成功后）
+                # 更新会话开始時間（在最后一個文件上傳成功后）
                 session['session_start'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
                 
                 return jsonify({
@@ -1440,7 +1440,7 @@ def upload_file():
         except Exception as e:
             return jsonify({
                 'success': False,
-                'error': f'處理文件时出错: {str(e)}'
+                'error': f'處理文件時出错: {str(e)}'
             })
     
     return jsonify({'success': False, 'error': '不支持的文件类型'})
@@ -1488,7 +1488,7 @@ def get_session_status():
             'message': '会话未初始化'
         })
     
-    # 不再检查超时，只返回会话状态
+    # 不再检查超時，只返回会话状态
     return jsonify({
         'active': True,
         'message': '会话活跃'
@@ -1505,7 +1505,7 @@ def clear_data():
             session.clear()
         return jsonify({'success': True, 'message': '数据已清除'})
     except Exception as e:
-        logger.error(f"清除数据时出错: {str(e)}", exc_info=True)
+        logger.error(f"清除数据時出错: {str(e)}", exc_info=True)
         return jsonify({
             'success': False,
             'error': f'清除数据失败: {str(e)}'
@@ -1513,7 +1513,7 @@ def clear_data():
 
 @app.route('/api/cleanup', methods=['POST'])
 def cleanup():
-    """只在会话過期时清理数据"""
+    """只在会话過期時清理数据"""
     try:
         if 'session_start' in session:
             start_time = datetime.strptime(session['session_start'], '%Y-%m-%d %H:%M:%S')
@@ -1530,25 +1530,25 @@ def cleanup():
         return jsonify({'success': True, 'message': '会话未過期'})
         
     except Exception as e:
-        logger.error(f"清理数据时出错: {str(e)}", exc_info=True)
+        logger.error(f"清理数据時出错: {str(e)}", exc_info=True)
         return jsonify({'success': False, 'error': str(e)}), 500
 
-# 添加应用关闭时的清理
+# 添加应用关闭時的清理
 @atexit.register
 def cleanup_all():
-    """应用关闭时清理所有临时数据"""
+    """应用关闭時清理所有临時数据"""
     try:
         if os.path.exists(UPLOAD_FOLDER):
             shutil.rmtree(UPLOAD_FOLDER)
             os.makedirs(UPLOAD_FOLDER, mode=0o700)
     except Exception as e:
-        logger.error(f"清理临时文件夹失败: {str(e)}")
+        logger.error(f"清理临時文件夹失败: {str(e)}")
 
-# 确保临时文件根目录存在
+# 确保临時文件根目录存在
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 
-# 添加获取会话剩余时间的接口
+# 添加获取会话剩余時間的接口
 @app.route('/api/session/time_remaining')
 def get_session_time_remaining():
     if 'session_start' not in session:
@@ -1559,7 +1559,7 @@ def get_session_time_remaining():
     now = datetime.now()
     
     if now >= expire_time:
-        # 如果已经超时,清理数据和缓存
+        # 如果已经超時,清理数据和缓存
         try:
             session_dir = get_session_dir()
             if os.path.exists(session_dir):
@@ -1580,8 +1580,8 @@ def get_available_years():
     """获取数据中所有可用的年份"""
     try:
         df = load_alipay_data()
-        # 从交易时间中提取所有不重复的年份
-        years = sorted(df['交易时间'].dt.year.unique().tolist(), reverse=True)
+        # 从交易時間中提取所有不重复的年份
+        years = sorted(df['交易時間'].dt.year.unique().tolist(), reverse=True)
         
         return jsonify({
             'success': True,
@@ -1589,7 +1589,7 @@ def get_available_years():
         })
         
     except Exception as e:
-        logger.error(f"获取可用年份时出错: {str(e)}")
+        logger.error(f"获取可用年份時出错: {str(e)}")
         return jsonify({
             'success': False,
             'error': f'获取可用年份失败: {str(e)}'
@@ -1603,15 +1603,15 @@ def analyze_merchants(df):
     # 按商家分组统计
     merchant_stats = expense_df.groupby('交易对方').agg({
         '金额': ['count', 'sum', 'mean'],
-        '交易时间': lambda x: (x.max() - x.min()).days + 1  # 交易跨度
+        '交易時間': lambda x: (x.max() - x.min()).days + 1  # 交易跨度
     }).round(2)
     
     merchant_stats.columns = ['交易次数', '总金额', '平均金额', '交易跨度']
     
     # 识别常客商家(最近3個月有2次以上消费)
-    recent_date = df['交易时间'].max()
+    recent_date = df['交易時間'].max()
     three_months_ago = recent_date - pd.Timedelta(days=90)
-    recent_df = expense_df[expense_df['交易时间'] >= three_months_ago]
+    recent_df = expense_df[expense_df['交易時間'] >= three_months_ago]
     
     frequent_merchants = []
     for merchant, group in recent_df.groupby('交易对方'):
@@ -1620,7 +1620,7 @@ def analyze_merchants(df):
                 'name': merchant,
                 'amount': group['金额'].sum(),
                 'count': len(group),
-                'last_visit': group['交易时间'].max().strftime('%Y-%m-%d')
+                'last_visit': group['交易時間'].max().strftime('%Y-%m-%d')
             })
     
     # 按消费金额排序
@@ -1645,8 +1645,8 @@ def analyze_scenarios(df):
         lambda x: '线上' if any(k in str(x) for k in online_keywords) else '线下'
     )
     
-    # 2. 消费时段分析
-    expense_df.loc[:, '消费时段'] = expense_df['交易时间'].dt.hour.map(
+    # 2. 消费時段分析
+    expense_df.loc[:, '消费時段'] = expense_df['交易時間'].dt.hour.map(
         lambda x: '清晨(6-9点)' if 6 <= x < 9
         else '上午(9-12点)' if 9 <= x < 12
         else '中午(12-14点)' if 12 <= x < 14
@@ -1676,13 +1676,13 @@ def analyze_scenarios(df):
             'category': '渠道'
         })
     
-    # 添加时段统计
-    time_stats = expense_df.groupby('消费时段')['金额'].sum()
+    # 添加時段统计
+    time_stats = expense_df.groupby('消费時段')['金额'].sum()
     for period, amount in time_stats.items():
         scenario_stats.append({
             'name': period,
             'value': float(amount),
-            'category': '时段'
+            'category': '時段'
         })
     
     # 添加金额层级统计
@@ -1701,22 +1701,22 @@ def analyze_habits(df):
     expense_df = df[df['收/支'] == '支出'].copy()
     
     # 1. 基础统计
-    daily_expenses = expense_df.groupby(expense_df['交易时间'].dt.date)['金额'].sum()
+    daily_expenses = expense_df.groupby(expense_df['交易時間'].dt.date)['金额'].sum()
     daily_avg = float(daily_expenses.mean())
     active_days = int(len(daily_expenses))
     
     # 2. 计算周末消费比例
-    weekend_expenses = expense_df[expense_df['交易时间'].dt.dayofweek.isin([5, 6])]['金额'].sum()
+    weekend_expenses = expense_df[expense_df['交易時間'].dt.dayofweek.isin([5, 6])]['金额'].sum()
     weekend_ratio = float((weekend_expenses / expense_df['金额'].sum() * 100))
     
     # 3. 计算固定支出比例
-    monthly_recurring = expense_df.groupby(['交易对方', expense_df['交易时间'].dt.month]).size()
+    monthly_recurring = expense_df.groupby(['交易对方', expense_df['交易時間'].dt.month]).size()
     recurring_merchants = monthly_recurring[monthly_recurring >= 2].index.get_level_values(0).unique()
     fixed_expenses = expense_df[expense_df['交易对方'].isin(recurring_merchants)]['金额'].sum()
     fixed_ratio = float((fixed_expenses / expense_df['金额'].sum() * 100))
     
     # 4. 计算月初消费比例
-    month_start = expense_df[expense_df['交易时间'].dt.day <= 5]['金额'].sum()
+    month_start = expense_df[expense_df['交易時間'].dt.day <= 5]['金额'].sum()
     month_start_ratio = float((month_start / expense_df['金额'].sum() * 100))
     
     return {
@@ -1741,20 +1741,20 @@ def generate_smart_tags(df):
     # 计算总体消费情况
     total_expense = expense_df['金额'].sum()
     avg_expense = expense_df['金额'].mean()
-    daily_expense = expense_df.groupby(expense_df['交易时间'].dt.date)['金额'].sum().mean()
+    daily_expense = expense_df.groupby(expense_df['交易時間'].dt.date)['金额'].sum().mean()
     
-    # 时间模式分析
-    hour_stats = expense_df.groupby(expense_df['交易时间'].dt.hour).size()
+    # 時間模式分析
+    hour_stats = expense_df.groupby(expense_df['交易時間'].dt.hour).size()
     peak_hours = hour_stats[hour_stats > hour_stats.mean()].index.tolist()
     
     if 22 in peak_hours or 23 in peak_hours:
-        result['tags'].append('夜间消费达人')
-        result['time_pattern'] = '您偏好在夜间消费，要注意作息哦'
+        result['tags'].append('夜間消费达人')
+        result['time_pattern'] = '您偏好在夜間消费，要注意作息哦'
     elif 6 in peak_hours or 7 in peak_hours:
         result['tags'].append('早起达人')
         result['time_pattern'] = '您是個早起消费的生活达人'
     else:
-        result['time_pattern'] = '您的消费时间比较规律，集中在日间'
+        result['time_pattern'] = '您的消费時間比較規律，集中在日間'
     
     # 消费偏好分析
     category_ratio = expense_df.groupby('交易分类')['金额'].sum() / total_expense
@@ -1767,30 +1767,30 @@ def generate_smart_tags(df):
     
     result['spending_preference'] = f"最常消费的品类是{', '.join(preference_desc)}"
     
-    # 消费规律分析
-    daily_expenses = expense_df.groupby(expense_df['交易时间'].dt.date)['金额'].sum()
+    # 消费規律分析
+    daily_expenses = expense_df.groupby(expense_df['交易時間'].dt.date)['金额'].sum()
     cv = daily_expenses.std() / daily_expenses.mean()
     
     if cv < 0.5:
         result['tags'].append('消费稳健派')
-        result['spending_pattern'] = '您的消费非常有规律，是個理性消费者'
+        result['spending_pattern'] = '您的消费非常有規律，是個理性消费者'
     elif cv < 0.8:
         result['tags'].append('平衡消费派')
-        result['spending_pattern'] = '您的消费较为均衡，适度有波动'
+        result['spending_pattern'] = '您的消费較为均衡，适度有波动'
     else:
         result['tags'].append('随性消费派')
-        result['spending_pattern'] = '您的消费比较随性，可能需要更多预算管理'
+        result['spending_pattern'] = '您的消费比較随性，可能需要更多预算管理'
     
     # 消费能力分析
     if daily_expense > 500:
         result['tags'].append('高消费人群')
-        result['spending_power'] = f'日均消费{daily_expense:.0f}元，属于高消费人群'
+        result['spending_power'] = f'日均消费{daily_expense:.0f}元，属於高消费人群'
     elif daily_expense > 200:
         result['tags'].append('中等消费人群')
         result['spending_power'] = f'日均消费{daily_expense:.0f}元，消费能力适中'
     else:
         result['tags'].append('理性消费人群')
-        result['spending_power'] = f'日均消费{daily_expense:.0f}元，消费比较节制'
+        result['spending_power'] = f'日均消费{daily_expense:.0f}元，消费比較节制'
     
     return result
 
@@ -1811,7 +1811,7 @@ def analyze_payment_methods(df):
     # 基础统计
     payment_stats = expense_df.groupby('支付方式').agg({
         '金额': ['count', 'sum', 'mean'],
-        '交易时间': lambda x: x.dt.date.nunique()  # 使用天数
+        '交易時間': lambda x: x.dt.date.nunique()  # 使用天数
     })
     
     # 重命名列
@@ -1848,11 +1848,11 @@ def yearly_analysis():
         max_amount = request.args.get('max_amount', type=float)
         
         # 获取当前年份数据
-        current_year_df = df[df['交易时间'].dt.year == year] if year else df
+        current_year_df = df[df['交易時間'].dt.year == year] if year else df
         
         # 获取上一年数据
-        last_year = year - 1 if year else df['交易时间'].dt.year.max() - 1
-        last_year_df = df[df['交易时间'].dt.year == last_year]
+        last_year = year - 1 if year else df['交易時間'].dt.year.max() - 1
+        last_year_df = df[df['交易時間'].dt.year == last_year]
         
         # 应用金额筛选
         if min_amount:
@@ -1898,10 +1898,10 @@ def yearly_analysis():
         
         # 按月统计支出和收入
         monthly_expenses = current_expense_df.groupby(
-            current_expense_df['交易时间'].dt.strftime('%Y-%m')
+            current_expense_df['交易時間'].dt.strftime('%Y-%m')
         )['金额'].sum()
         monthly_incomes = current_income_df.groupby(
-            current_income_df['交易时间'].dt.strftime('%Y-%m')
+            current_income_df['交易時間'].dt.strftime('%Y-%m')
         )['金额'].sum()
         
         # 使用生成的月份列表重新索引
@@ -1920,9 +1920,9 @@ def yearly_analysis():
             'expense_count': int(len(current_expense_df)),
             'income_count': int(len(current_income_df)),
             'total_count': int(current_count),
-            'active_days': int(len(current_year_df['交易时间'].dt.date.unique())),
+            'active_days': int(len(current_year_df['交易時間'].dt.date.unique())),
             'avg_transaction': float(current_expense_df['金额'].mean()) if len(current_expense_df) > 0 else 0,
-            'avg_daily_expense': float(current_expense / max(1, len(current_year_df['交易时间'].dt.date.unique()))),
+            'avg_daily_expense': float(current_expense / max(1, len(current_year_df['交易時間'].dt.date.unique()))),
             'avg_monthly_income': float(current_income / 12),
             'expense_ratio': float(current_expense / current_income * 100) if current_income > 0 else 0,
             'comparisons': {

@@ -98,11 +98,11 @@ Query Parameters:
 GET /api/category_analysis
 Query Parameters:
   - category: 分类名称
-  - range: 时间范围
+  - range: 時間范围
   - filter: 筛选类型
 ~~~
 
-### 2.4 时间分析
+### 2.4 時間分析
 ~~~http
 GET /api/time_analysis
 Query Parameters:
@@ -164,7 +164,7 @@ GET /api/session/status
 
 ## 4. 错误處理
 
-所有 API 在发生错误时返回统一格式：
+所有 API 在发生错误時返回统一格式：
 
 ~~~json
 {
@@ -184,8 +184,8 @@ GET /api/session/status
 
 ## 5. 数据格式规范
 
-### 5.1 时间格式
-- 日期时间：ISO 8601 格式（YYYY-MM-DD HH:mm:ss）
+### 5.1 時間格式
+- 日期時間：ISO 8601 格式（YYYY-MM-DD HH:mm:ss）
 - 日期：YYYY-MM-DD
 - 月份：YYYY-MM
 
@@ -201,7 +201,7 @@ GET /api/session/status
 ## 6. 安全说明
 
 - 所有 API 请求需要在有效会话内进行
-- 会话超时时间为 30 分钟
+- 会话超時時間为 30 分钟
 - 文件大小限制为 16MB
 - 仅支持 CSV 格式文件上傳
 ~~~ 

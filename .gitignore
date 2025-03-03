@@ -25,4 +25,4 @@ app.log
 Thumbs.db
 
 # Application specific
-.datas/*
+datas/*

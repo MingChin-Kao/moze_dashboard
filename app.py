@@ -18,12 +18,12 @@ from secrets import token_hex
 app = Flask(__name__)
 
 # 在 app 配置后添加
-app.config.update(
-    SESSION_COOKIE_SECURE=True,  # 只在 HTTPS 下发送 cookie
-    SESSION_COOKIE_HTTPONLY=True,  # 防止 JavaScript 访问 cookie
-    SESSION_COOKIE_SAMESITE='Lax',  # 防止 CSRF 攻击
-    PERMANENT_SESSION_LIFETIME=timedelta(minutes=30)  # 设置会话過期時間
-)
+# app.config.update(
+#     SESSION_COOKIE_SECURE=True,  # 只在 HTTPS 下发送 cookie
+#     SESSION_COOKIE_HTTPONLY=True,  # 防止 JavaScript 访问 cookie
+#     SESSION_COOKIE_SAMESITE='Lax',  # 防止 CSRF 攻击
+#     PERMANENT_SESSION_LIFETIME=timedelta(minutes=30)  # 设置会话過期時間
+# )
 
 # 从环境变量获取密钥，如果没有则生成一個新的
 app.secret_key = os.environ.get('FLASK_SECRET_KEY') or token_hex(32)
@@ -49,32 +49,32 @@ app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-def get_session_dir():
-    """获取当前会话的临時目录"""
-    if 'user_id' not in session:
-        # 使用更安全的方式生成用户ID
-        session['user_id'] = f"user_{token_hex(16)}"
-        # 记录会话创建時間
-        session['created_at'] = datetime.now().timestamp()
+# def get_session_dir():
+#     """获取当前会话的临時目录"""
+#     if 'user_id' not in session:
+#         # 使用更安全的方式生成用户ID
+#         session['user_id'] = f"user_{token_hex(16)}"
+#         # 记录会话创建時間
+#         session['created_at'] = datetime.now().timestamp()
         
-    # 检查会话是否過期
-    if 'created_at' in session:
-        session_age = datetime.now().timestamp() - session['created_at']
-        if session_age > 1800:  # 30分钟過期
-            # 清理旧文件
-            old_session_dir = os.path.join(app.config['UPLOAD_FOLDER'], session['user_id'])
-            if os.path.exists(old_session_dir):
-                shutil.rmtree(old_session_dir)
-            # 重新生成会话
-            session.clear()
-            return get_session_dir()
+#     # 检查会话是否過期
+#     if 'created_at' in session:
+#         session_age = datetime.now().timestamp() - session['created_at']
+#         if session_age > 1800:  # 30分钟過期
+#             # 清理旧文件
+#             old_session_dir = os.path.join(app.config['UPLOAD_FOLDER'], session['user_id'])
+#             if os.path.exists(old_session_dir):
+#                 shutil.rmtree(old_session_dir)
+#             # 重新生成会话
+#             session.clear()
+#             return get_session_dir()
     
-    session_dir = os.path.join(app.config['UPLOAD_FOLDER'], session['user_id'])
+#     session_dir = os.path.join(app.config['UPLOAD_FOLDER'], session['user_id'])
     
-    if not os.path.exists(session_dir):
-        os.makedirs(session_dir, mode=0o700)  # 确保目录权限正确
+#     if not os.path.exists(session_dir):
+#         os.makedirs(session_dir, mode=0o700)  # 确保目录权限正确
     
-    return session_dir
+#     return session_dir
 
 def user_cache(f):
     """用户级别的缓存装饰器"""
@@ -111,7 +111,7 @@ def user_cache(f):
 @user_cache
 def load_alipay_data():
     try:
-        session_dir = get_session_dir()
+        session_dir = app.config['UPLOAD_FOLDER']
         all_data = []
         
         # 读取会话目录中的所有CSV文件
@@ -226,29 +226,29 @@ def validate_dataframe(df):
     if not pd.api.types.is_numeric_dtype(df['金額']):
         raise ValueError("'金額'列必須是數值類型")
 
-def check_data_exists(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        # 如果是 settings 页面，不需要检查数据
-        if request.endpoint == 'settings':
-            return f(*args, **kwargs)
+# def check_data_exists(f):
+#     @wraps(f)
+#     def decorated_function(*args, **kwargs):
+#         # 如果是 settings 页面，不需要检查数据
+#         if request.endpoint == 'settings':
+#             return f(*args, **kwargs)
             
-        if 'user_id' not in session:
-            return redirect(url_for('settings'))
+#         if 'user_id' not in session:
+#             return redirect(url_for('settings'))
             
-        session_dir = get_session_dir()
-        has_data = False
-        print("=== session_dir ===", session_dir)
-        if os.path.exists(session_dir):
-            for filename in os.listdir(session_dir):
-                if filename.endswith('.csv'):
-                    has_data = True
-                    break
-        print("=== has_data ===", has_data)
-        if not has_data:
-            return redirect(url_for('settings'))
-        return f(*args, **kwargs)
-    return decorated_function
+#         session_dir = app.config['UPLOAD_FOLDER']
+#         has_data = False
+#         print("=== session_dir ===", session_dir)
+#         if os.path.exists(session_dir):
+#             for filename in os.listdir(session_dir):
+#                 if filename.endswith('.csv'):
+#                     has_data = True
+#                     break
+#         print("=== has_data ===", has_data)
+#         if not has_data:
+#             return redirect(url_for('settings'))
+#         return f(*args, **kwargs)
+#     return decorated_function
 
 @app.route('/')
 @app.route('/index')
@@ -256,80 +256,73 @@ def index():
     return render_template('index.html', active_page='index')
 
 @app.route('/yearly')
-@check_data_exists
+# @check_data_exists
 def yearly():
     return render_template('yearly.html', active_page='yearly')
 
 @app.route('/monthly')
-@check_data_exists
+# @check_data_exists
 def monthly():
     return render_template('monthly.html', active_page='monthly')
 
 @app.route('/category')
-@check_data_exists
+# @check_data_exists
 def category():
     return render_template('category.html', active_page='category')
 
 @app.route('/time')
-@check_data_exists
+# @check_data_exists
 def time():
     return render_template('time.html', active_page='time')
 
 @app.route('/transactions')
-@check_data_exists
+# @check_data_exists
 def transactions():
     return render_template('transactions.html', active_page='transactions')
 
 @app.route('/insights')
-@check_data_exists
+# @check_data_exists
 def insights():
     return render_template('insights.html', active_page='insights')
 
 @app.route('/analysis')
-@check_data_exists
+# @check_data_exists
 def analysis():
     print("=== HiHi ===")
     return render_template('analysis.html', active_page='analysis')
 
-@app.route('/api/analysis')
+@app.route('/api/analysis', methods=['GET'])
 def get_analysis():
+    """分析上傳的 CSV 資料"""
     try:
-        df = load_alipay_data()
-        
-        # 获取年份参数
-        year = request.args.get('year', type=int)
-        if year:
-            df = df[df['時間'].dt.year == year]
-        
-        # 商家分析
-        merchant_analysis = analyze_merchants(df)
-        
-        # 消费场景分析 
-        scenario_analysis = analyze_scenarios(df)
-        
-        # 消费习惯分析
-        habit_analysis = analyze_habits(df)
-        
-        # 智能标签
-        tags = generate_smart_tags(df)
-        
-        # 分析支付方式
-        payment_analysis = analyze_payment_methods(df)
-        
-        return jsonify({
-            'success': True,
-            'data': {
-                'merchant_analysis': merchant_analysis,
-                'scenario_analysis': scenario_analysis,
-                'habit_analysis': habit_analysis,
-                'tags': tags,
-                'payment_analysis': payment_analysis
-            }
-        })
-        
+        all_data = []
+        if not os.path.exists(UPLOAD_FOLDER):
+            return jsonify({'success': False, 'error': '沒有上傳的檔案'})
+
+        # 讀取所有 CSV 檔案
+        for filename in os.listdir(UPLOAD_FOLDER):
+            if filename.endswith('.csv'):
+                filepath = os.path.join(UPLOAD_FOLDER, filename)
+                try:
+                    df = pd.read_csv(filepath, encoding='utf-8')
+                    df['日期時間'] = pd.to_datetime(df['日期'] + ' ' + df['時間'], errors='coerce')
+                    df['金額'] = df['金額'].astype(float)
+                    all_data.append(df)
+                except Exception as e:
+                    logger.error(f"處理檔案 {filename} 時發生錯誤: {str(e)}")
+                    continue
+
+        if not all_data:
+            return jsonify({'success': False, 'error': '未找到可用的數據'})
+
+        combined_df = pd.concat(all_data, ignore_index=True)
+        combined_df = combined_df.sort_values('日期時間')
+
+        return jsonify({'success': True, 'message': '數據分析成功'})
+
     except Exception as e:
-        logger.error(f"Analysis error: {str(e)}")
-        return jsonify({'success': False, 'error': str(e)})
+        logger.error(f"分析錯誤: {str(e)}")
+        return jsonify({'success': False, 'error': str(e)}), 500
 
 @app.route('/api/monthly_analysis')
 def monthly_analysis():
@@ -1135,15 +1128,12 @@ def favicon():
 
 @app.errorhandler(404)
 def not_found_error(error):
-    return "页面未找到 - 404", 404
+    return jsonify({'success': False, 'error': '404 - 資源未找到'}), 404
 
 @app.errorhandler(500)
 def internal_error(error):
-    logger.error(f"Internal Server Error: {str(error)}")
-    return jsonify({
-        'success': False,
-        'error': '服务器内部错误，请稍后重试'
-    }), 500
+    logger.error(f"伺服器錯誤: {str(error)}")
+    return jsonify({'success': False, 'error': '500 - 伺服器錯誤'}), 500
 
 @app.route('/api/overview_data')
 def get_overview_data():
@@ -1761,106 +1751,91 @@ def settings():
 
 @app.route('/api/upload', methods=['POST'])
 def upload_file():
+    """處理檔案上傳"""
     try:
-        logger.info("Starting file upload...")
         if 'file' not in request.files:
-            return jsonify({'success': False, 'error': '没有文件被上傳'}), 400
-            
+            return jsonify({'success': False, 'error': '沒有選擇檔案'}), 400
+        
         file = request.files['file']
         if file.filename == '':
-            return jsonify({'success': False, 'error': '未选择文件'}), 400
-            
+            return jsonify({'success': False, 'error': '未選擇檔案'}), 400
+        
         if not allowed_file(file.filename):
-            return jsonify({'success': False, 'error': '不支持的文件类型'}), 400
-            
-        # 确保目录存在
-        session_dir = get_session_dir()
-        if not os.path.exists(session_dir):
-            os.makedirs(session_dir, mode=0o700)
-            
-        # 安全地保存文件
+            return jsonify({'success': False, 'error': '不支援的檔案類型'}), 400
+
+        # 確保資料夾存在
+        if not os.path.exists(UPLOAD_FOLDER):
+            os.makedirs(UPLOAD_FOLDER, mode=0o700)
+
+        # 儲存檔案
         filename = secure_filename(file.filename)
-        filepath = os.path.join(session_dir, filename)
+        filepath = os.path.join(UPLOAD_FOLDER, filename)
         file.save(filepath)
-        
-        # 更新会话時間戳
-        session['created_at'] = datetime.now().timestamp()
-        
-        return jsonify({
-            'success': True,
-            'filename': filename,
-            'message': '文件上傳成功'
-        })
-        
+
+        return jsonify({'success': True, 'filename': filename, 'message': '檔案上傳成功'})
+    
     except Exception as e:
-        logger.exception("Upload failed with error:")  # 这会记录完整的堆栈跟踪
+        logger.error(f"上傳失敗: {str(e)}")
         return jsonify({'success': False, 'error': str(e)}), 500
 
-@app.route('/api/files')
+@app.route('/api/files', methods=['GET'])
 def list_files():
-    """列出当前会话的文件"""
-    session_dir = get_session_dir()
+    """列出所有上傳的 CSV 檔案"""
     files = []
-    if os.path.exists(session_dir):
-        for filename in os.listdir(session_dir):
+    if os.path.exists(UPLOAD_FOLDER):
+        for filename in os.listdir(UPLOAD_FOLDER):
             if filename.endswith('.csv'):
                 files.append({
                     'name': filename,
-                    'size': os.path.getsize(os.path.join(session_dir, filename))
+                    'size': os.path.getsize(os.path.join(UPLOAD_FOLDER, filename))
                 })
     return jsonify({'files': files})
 
 @app.route('/api/files/<filename>', methods=['DELETE'])
 def delete_file(filename):
-    """删除会话中的文件"""
-    if not filename.endswith('.csv'):
-        return jsonify({'success': False, 'error': '無效的文件名'})
-    
+    """刪除特定檔案"""
     try:
-        session_dir = get_session_dir()
-        filepath = os.path.join(session_dir, secure_filename(filename))
-        
+        filepath = os.path.join(UPLOAD_FOLDER, secure_filename(filename))
         if os.path.exists(filepath):
-            # os.remove(filepath)
-            # 清除数据缓存
-            # load_alipay_data.cache_clear()
-            return jsonify({'success': True})
+            os.remove(filepath)
+            return jsonify({'success': True, 'message': '檔案刪除成功'})
         else:
-            return jsonify({'success': False, 'error': '文件不存在'})
+            return jsonify({'success': False, 'error': '檔案不存在'})
+    
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)})
 
-@app.route('/api/session/status')
-def get_session_status():
-    """获取会话状态"""
-    if 'user_id' not in session:
-        return jsonify({
-            'active': False,
-            'message': '会话未初始化'
-        })
+# @app.route('/api/session/status')
+# def get_session_status():
+#     """获取会话状态"""
+#     if 'user_id' not in session:
+#         return jsonify({
+#             'active': False,
+#             'message': '会话未初始化'
+#         })
     
-    # 不再检查超時，只返回会话状态
-    return jsonify({
-        'active': True,
-        'message': '会话活跃'
-    })
+#     # 不再检查超時，只返回会话状态
+#     return jsonify({
+#         'active': True,
+#         'message': '会话活跃'
+#     })
 
-@app.route('/api/clear_data', methods=['POST'])
-def clear_data():
-    """手动清除用户数据"""
-    try:
-        if 'user_id' in session:
-            session_dir = get_session_dir()
-            if os.path.exists(session_dir):
-                shutil.rmtree(session_dir)
-            session.clear()
-        return jsonify({'success': True, 'message': '数据已清除'})
-    except Exception as e:
-        logger.error(f"清除数据時出错: {str(e)}", exc_info=True)
-        return jsonify({
-            'success': False,
-            'error': f'清除数据失败: {str(e)}'
-        }), 500
+# @app.route('/api/clear_data', methods=['POST'])
+# def clear_data():
+#     """手动清除用户数据"""
+#     try:
+#         if 'user_id' in session:
+#             session_dir = app.config['UPLOAD_FOLDER']
+#             if os.path.exists(session_dir):
+#                 shutil.rmtree(session_dir)
+#             session.clear()
+#         return jsonify({'success': True, 'message': '数据已清除'})
+#     except Exception as e:
+#         logger.error(f"清除数据時出错: {str(e)}", exc_info=True)
+#         return jsonify({
+#             'success': False,
+#             'error': f'清除数据失败: {str(e)}'
+#         }), 500
 
 @app.route('/api/cleanup', methods=['POST'])
 def cleanup():
@@ -1901,72 +1876,72 @@ if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 
 # 添加获取会话剩余時間的接口
-@app.route('/api/session/time_remaining')
-def get_session_time_remaining():
-    if 'session_start' not in session:
-        logger.info("No session_start found in session")
-        return jsonify({'remaining': 0})
+# @app.route('/api/session/time_remaining')
+# def get_session_time_remaining():
+#     if 'session_start' not in session:
+#         logger.info("No session_start found in session")
+#         return jsonify({'remaining': 0})
     
-    start_time = datetime.strptime(session['session_start'], '%Y-%m-%d %H:%M:%S')
-    expire_time = start_time + timedelta(minutes=30)
-    now = datetime.now()
+#     start_time = datetime.strptime(session['session_start'], '%Y-%m-%d %H:%M:%S')
+#     expire_time = start_time + timedelta(minutes=30)
+#     now = datetime.now()
     
-    if now >= expire_time:
-        try:
-            session_dir = get_session_dir()
-            logger.info(f"Session expired. Checking directory: {session_dir}")
+#     if now >= expire_time:
+#         try:
+#             session_dir = app.config['UPLOAD_FOLDER']
+#             logger.info(f"Session expired. Checking directory: {session_dir}")
             
-            if os.path.exists(session_dir):
-                # 检查目录是否正在使用
-                try:
-                    # 尝试创建一個临時文件来测试目录是否可写
-                    test_file = os.path.join(session_dir, '.test')
-                    with open(test_file, 'w') as f:
-                        f.write('test')
-                    # os.remove(test_file)
+#             if os.path.exists(session_dir):
+#                 # 检查目录是否正在使用
+#                 try:
+#                     # 尝试创建一個临時文件来测试目录是否可写
+#                     test_file = os.path.join(session_dir, '.test')
+#                     with open(test_file, 'w') as f:
+#                         f.write('test')
+#                     # os.remove(test_file)
                     
-                    # 如果可以写入，说明目录没有被锁定
-                    files = os.listdir(session_dir)
-                    logger.info(f"Found files: {files}")
+#                     # 如果可以写入，说明目录没有被锁定
+#                     files = os.listdir(session_dir)
+#                     logger.info(f"Found files: {files}")
                     
-                    # 逐個检查并删除文件
-                    for file in files:
-                        filepath = os.path.join(session_dir, file)
-                        try:
-                            # 尝试打开文件，确保没有其他进程在使用
-                            with open(filepath, 'r') as f:
-                                pass
-                            # 如果成功打开，则删除文件
-                            # os.remove(filepath)
-                            logger.info(f"Deleted file: {file}")
-                        except IOError as e:
-                            logger.warning(f"Cannot delete file {file}: {str(e)}")
-                            continue
+#                     # 逐個检查并删除文件
+#                     for file in files:
+#                         filepath = os.path.join(session_dir, file)
+#                         try:
+#                             # 尝试打开文件，确保没有其他进程在使用
+#                             with open(filepath, 'r') as f:
+#                                 pass
+#                             # 如果成功打开，则删除文件
+#                             # os.remove(filepath)
+#                             logger.info(f"Deleted file: {file}")
+#                         except IOError as e:
+#                             logger.warning(f"Cannot delete file {file}: {str(e)}")
+#                             continue
                     
-                    # 最后删除目录
-                    os.rmdir(session_dir)
-                    logger.info("Directory deleted successfully")
+#                     # 最后删除目录
+#                     os.rmdir(session_dir)
+#                     logger.info("Directory deleted successfully")
                     
-                except IOError as e:
-                    logger.warning(f"Directory is in use: {str(e)}")
-                    # 如果目录被锁定，不进行删除
-                    return jsonify({'remaining': 30, 'extended': True})
+#                 except IOError as e:
+#                     logger.warning(f"Directory is in use: {str(e)}")
+#                     # 如果目录被锁定，不进行删除
+#                     return jsonify({'remaining': 30, 'extended': True})
             
-            # 清除缓存和会话
-            load_alipay_data.cache_clear()
-            session.clear()
-            logger.info("Cache and session cleared")
+#             # 清除缓存和会话
+#             load_alipay_data.cache_clear()
+#             session.clear()
+#             logger.info("Cache and session cleared")
             
-            return jsonify({'remaining': 0, 'expired': True})
+#             return jsonify({'remaining': 0, 'expired': True})
             
-        except Exception as e:
-            logger.error(f"Error during cleanup: {str(e)}", exc_info=True)
-            # 如果清理過程出错，给用户多一些時間
-            return jsonify({'remaining': 30, 'error': str(e), 'extended': True})
+#         except Exception as e:
+#             logger.error(f"Error during cleanup: {str(e)}", exc_info=True)
+#             # 如果清理過程出错，给用户多一些時間
+#             return jsonify({'remaining': 30, 'error': str(e), 'extended': True})
     
-    remaining_seconds = int((expire_time - now).total_seconds())
-    logger.debug(f"Session remaining time: {remaining_seconds} seconds")
-    return jsonify({'remaining': remaining_seconds, 'expired': False})
+#     remaining_seconds = int((expire_time - now).total_seconds())
+#     logger.debug(f"Session remaining time: {remaining_seconds} seconds")
+#     return jsonify({'remaining': remaining_seconds, 'expired': False})
 
 @app.route('/api/available_years')
 def get_available_years():
@@ -2339,13 +2314,13 @@ def yearly_analysis():
     #     return jsonify({'success': False, 'error': str(e)})
 
 
-@app.before_request
-def check_session_expiry():
-    if 'created_at' in session:
-        session_age = datetime.now().timestamp() - session['created_at']
-        if session_age > 1800:  # 30分钟過期
-            session.clear()
-            return redirect(url_for('index'))
+# @app.before_request
+# def check_session_expiry():
+#     if 'created_at' in session:
+#         session_age = datetime.now().timestamp() - session['created_at']
+#         if session_age > 1800:  # 30分钟過期
+#             session.clear()
+#             return redirect(url_for('index'))
 
 @app.teardown_request
 def cleanup_session(exception=None):

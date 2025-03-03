@@ -662,35 +662,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // 修改计時器更新函数
     function updateTimer() {
         if (window.isRedirecting) return;
-        
-        fetch('/api/session/time_remaining')
-            .then(response => response.json())
-            .then(data => {
-                const timeDisplay = document.getElementById('timeRemaining');
-                
-                // 如果会话还未开始（没有上傳文件）
-                if (!data.hasOwnProperty('remaining')) {
-                    timeDisplay.textContent = '--:--';
-                    return;
-                }
-                
-                const remaining = data.remaining;
-                if (remaining <= 0 || data.expired) {
-                    timeDisplay.textContent = '已過期';
-                    // 只在有文件的情况下才重定向
-                    if (localStorage.getItem('isUploading')) {
-                        window.isRedirecting = true;
-                        localStorage.removeItem('isUploading');
-                        window.location.href = '/';
-                    }
-                    return;
-                }
-                
-                const minutes = Math.floor(remaining / 60);
-                const seconds = remaining % 60;
-                timeDisplay.textContent = 
-                    `${minutes}:${seconds.toString().padStart(2, '0')}`;
-            });
     }
     
     // 在文件上傳成功時开始计時

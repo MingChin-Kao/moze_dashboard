@@ -681,6 +681,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
+                    console.log('Analysis data:', data.data);
                     updateAnalysis(data.data);
                 } else {
                     showToast('加载分析数据失败：' + data.error);

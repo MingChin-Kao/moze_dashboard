@@ -291,38 +291,50 @@ def analysis():
     print("=== HiHi ===")
     return render_template('analysis.html', active_page='analysis')
 
-@app.route('/api/analysis', methods=['GET'])
+    
+@app.route('/api/analysis')
 def get_analysis():
-    """分析上傳的 CSV 資料"""
-    try:
-        all_data = []
-        if not os.path.exists(UPLOAD_FOLDER):
-            return jsonify({'success': False, 'error': '沒有上傳的檔案'})
+    # try:
+    df = load_alipay_data()
+    
+    # 获取年份参数
+    year = request.args.get('year', type=int)
+    # 確保 `金額` 欄位是數字並轉為正數
+    df['金額'] = pd.to_numeric(df['金額'], errors='coerce').abs()
+    df['日期時間'] = pd.to_datetime(df['日期'].astype(str) + ' ' + df['時間'].astype(str), errors='coerce')
 
-        # 讀取所有 CSV 檔案
-        for filename in os.listdir(UPLOAD_FOLDER):
-            if filename.endswith('.csv'):
-                filepath = os.path.join(UPLOAD_FOLDER, filename)
-                try:
-                    df = pd.read_csv(filepath, encoding='utf-8')
-                    df['日期時間'] = pd.to_datetime(df['日期'] + ' ' + df['時間'], errors='coerce')
-                    df['金額'] = df['金額'].astype(float)
-                    all_data.append(df)
-                except Exception as e:
-                    logger.error(f"處理檔案 {filename} 時發生錯誤: {str(e)}")
-                    continue
-
-        if not all_data:
-            return jsonify({'success': False, 'error': '未找到可用的數據'})
-
-        combined_df = pd.concat(all_data, ignore_index=True)
-        combined_df = combined_df.sort_values('日期時間')
-
-        return jsonify({'success': True, 'message': '數據分析成功'})
-
-    except Exception as e:
-        logger.error(f"分析錯誤: {str(e)}")
-        return jsonify({'success': False, 'error': str(e)}), 500
+    if year:
+        df = df[df['日期時間'].dt.year == year]
+    
+    # 商家分析
+    merchant_analysis = analyze_merchants(df)
+    
+    # 消费场景分析 
+    scenario_analysis = analyze_scenarios(df)
+    
+    # 消费习惯分析
+    habit_analysis = analyze_habits(df)
+    
+    # 智能标签
+    tags = generate_smart_tags(df)
+    
+    # 分析支付方式
+    payment_analysis = analyze_payment_methods(df)
+    
+    return jsonify({
+        'success': True,
+        'data': {
+            'merchant_analysis': merchant_analysis,
+            'scenario_analysis': scenario_analysis,
+            'habit_analysis': habit_analysis,
+            'tags': tags,
+            'payment_analysis': payment_analysis
+        }
+    })
+        
+    # except Exception as e:
+    #     logger.error(f"Analysis error: {str(e)}")
+    #     return jsonify({'success': False, 'error': str(e)})
 
 @app.route('/api/monthly_analysis')
 def monthly_analysis():
@@ -476,6 +488,7 @@ def get_transactions():
     try:
         df = load_alipay_data()
         
+        df['金額'] = pd.to_numeric(df['金額'], errors='coerce').abs()
         # 獲取分頁參數
         page = request.args.get('page', 1, type=int)
         per_page = request.args.get('per_page', 20, type=int)  # 默認每頁20條
@@ -710,7 +723,8 @@ def daily_data():
     try:
         df = load_alipay_data()
         df['時間'] = pd.to_datetime(df['時間'], errors='coerce')
-
+        df['日期時間'] = pd.to_datetime(df['日期'].astype(str) + ' ' + df['時間'].astype(str), errors='coerce')
+        
         year = request.args.get('year', type=int)
         filter_type = request.args.get('filter', 'all')
 
@@ -720,11 +734,11 @@ def daily_data():
             df = df[df['金額'] <= 1000]
             
         if year:
-            df = df[df['時間'].dt.year == year]
+            df = df[df['日期時間'].dt.year == year]
 
         df = df[df['記錄類型'].isin(['收入', '支出'])]
 
-        daily_data = df.groupby(['日期', '記錄類型']).agg({'金額': 'sum', '時間': 'count'}).reset_index()
+        daily_data = df.groupby(['日期', '記錄類型']).agg({'金額': 'sum', '日期時間': 'count'}).reset_index()
 
         expense_data, income_data, transaction_data = [], [], []
 
@@ -741,7 +755,7 @@ def daily_data():
                 income_value = max(float(income['金額'].iloc[0]), 0)  
                 income_data.append([date_str, income_value])
                 
-            transaction_count = group['時間'].sum()
+            transaction_count = group['日期時間'].sum()
             transaction_data.append([date_str, int(transaction_count)])
 
         expense_amounts = [abs(x[1]) for x in expense_data]
@@ -888,95 +902,6 @@ def category_trend(category):
     
     return jsonify(result)
 
-# @app.route('/api/time_analysis')
-# def time_analysis():
-    """获取時間分析数据，支持年份筛选"""
-    try:
-        df = load_alipay_data()
-        
-        # 获取查询参数
-        year = request.args.get('year', type=int)
-        filter_type = request.args.get('filter', 'all')
-        
-        # 只分析支出数据
-        expense_df = df[df['記錄類型'] == '支出']
-        
-        # 如果指定了年份，過滤对应年份的数据
-        if year:
-            expense_df = expense_df[expense_df['時間'].dt.year == year]
-            
-        # 根据筛选条件過滤数据 - 移到这里，在计算统计数据之前過滤
-        if filter_type == 'large':
-            expense_df = expense_df[expense_df['金額'] > 1000]
-        elif filter_type == 'small':
-            expense_df = expense_df[expense_df['金額'] <= 1000]
-        
-        # 1. 计算日内時段分布
-        expense_df['hour'] = expense_df['時間'].dt.hour
-        hourly_stats = expense_df.groupby('hour').agg({
-            '金額': 'sum',
-            '時間': 'count'
-        }).reset_index()
-        
-        # 确保所有小時都有数据，没有数据的填充0
-        all_hours = pd.DataFrame({'hour': range(24)})
-        hourly_stats = pd.merge(all_hours, hourly_stats, on='hour', how='left').fillna(0)
-        
-        hourly_data = {
-            'amounts': hourly_stats['金額'].round(2).tolist(),
-            'counts': hourly_stats['時間'].tolist()
-        }
-        
-        # 2. 计算工作日/周末分布
-        expense_df['is_weekend'] = expense_df['時間'].dt.dayofweek.isin([5, 6])
-        category_weekday = {}
-        
-        for category in expense_df['主類別'].unique():
-            category_df = expense_df[expense_df['主類別'] == category]
-            
-            if len(category_df) == 0:
-                continue
-                
-            weekday_amount = category_df[~category_df['is_weekend']]['金額'].sum()
-            weekend_amount = category_df[category_df['is_weekend']]['金額'].sum()
-            total_amount = weekday_amount + weekend_amount
-            
-            if total_amount == 0:
-                continue
-                
-            weekday_count = len(category_df[~category_df['is_weekend']])
-            weekend_count = len(category_df[category_df['is_weekend']])
-            
-            category_weekday[category] = {
-                'weekday': {
-                    'amount': float(weekday_amount),
-                    'count': int(weekday_count),
-                    'percentage': round(weekday_amount / total_amount * 100, 1)
-                },
-                'weekend': {
-                    'amount': float(weekend_amount),
-                    'count': int(weekend_count),
-                    'percentage': round(weekend_amount / total_amount * 100, 1)
-                }
-            }
-        
-        # 按总金額排序
-        sorted_categories = sorted(
-            category_weekday.items(),
-            key=lambda x: x[1]['weekday']['amount'] + x[1]['weekend']['amount'],
-            reverse=True
-        )
-        category_weekday = dict(sorted_categories)
-        
-        return jsonify({
-            'hourly': hourly_data,
-            'weekday_weekend': category_weekday
-        })
-        
-    except Exception as e:
-        logger.error(f"Error in time analysis: {str(e)}")
-        return jsonify({'error': str(e)}), 500
-
 @app.route('/api/time_analysis')
 def time_analysis():
     """获取時間分析数据，支持年份筛选"""
@@ -985,6 +910,7 @@ def time_analysis():
 
         # 确保 "時間" 是 datetime 类型
         df['時間'] = pd.to_datetime(df['時間'], errors='coerce')
+        df['日期時間'] = pd.to_datetime(df['日期'].astype(str) + ' ' + df['時間'].astype(str), errors='coerce')
 
         # 获取查询参数
         year = request.args.get('year', type=int)
@@ -998,7 +924,7 @@ def time_analysis():
 
         # 如果指定了年份，過滤对应年份的数据
         if year:
-            expense_df = expense_df[expense_df['時間'].dt.year == year]
+            expense_df = expense_df[expense_df['日期時間'].dt.year == year]
 
         # 根据筛选条件過滤数据
         if filter_type == 'large':
@@ -1007,10 +933,10 @@ def time_analysis():
             expense_df = expense_df[expense_df['金額'] <= 1000]
 
         # 1. 计算日内時段分布
-        expense_df['hour'] = expense_df['時間'].dt.hour
+        expense_df['hour'] = expense_df['日期時間'].dt.hour
         hourly_stats = expense_df.groupby('hour').agg({
             '金額': 'sum',
-            '時間': 'count'
+            '日期時間': 'count'
         }).reset_index()
 
         # 确保所有小時都有数据
@@ -1019,11 +945,11 @@ def time_analysis():
 
         hourly_data = {
             'amounts': hourly_stats['金額'].round(2).tolist(),
-            'counts': hourly_stats['時間'].astype(int).tolist()
+            'counts': hourly_stats['日期時間'].astype(int).tolist()
         }
 
         # 2. 计算工作日/周末分布
-        expense_df['is_weekend'] = expense_df['日期'].dt.dayofweek.isin([5, 6])
+        expense_df['is_weekend'] = expense_df['日期時間'].dt.dayofweek.isin([5, 6])
         category_weekday = {}
 
         for category in expense_df['主類別'].unique():
@@ -1619,7 +1545,6 @@ def category_analysis():
         })
 
     category_df = expense_df[expense_df['主類別'] == category]
-    print(f"== category_df is {category_df} ===")
     if category_df.empty:
         return jsonify({'error': f'未找到分类 "{category}" 的数据'}), 404
 
@@ -1938,7 +1863,6 @@ if not os.path.exists(UPLOAD_FOLDER):
 #             logger.error(f"Error during cleanup: {str(e)}", exc_info=True)
 #             # 如果清理過程出错，给用户多一些時間
 #             return jsonify({'remaining': 30, 'error': str(e), 'extended': True})
-    
 #     remaining_seconds = int((expire_time - now).total_seconds())
 #     logger.debug(f"Session remaining time: {remaining_seconds} seconds")
 #     return jsonify({'remaining': remaining_seconds, 'expired': False})
@@ -1952,7 +1876,7 @@ def get_available_years():
         # 确保 '日期' 列是 datetime 类型
         df['日期'] = pd.to_datetime(df['日期'], format='%Y/%m/%d', errors='coerce')
         df['時間'] = pd.to_datetime(df['時間'], format='%H:%M', errors='coerce').dt.time
-
+        
         # 检查是否有转换失败的情况（即 NaT 值）
         if df['日期'].isna().any():
             raise ValueError("日期列包含無法解析的值")
@@ -1981,15 +1905,15 @@ def analyze_merchants(df):
     # 按商家分组统计
     merchant_stats = expense_df.groupby('商家').agg({
         '金額': ['count', 'sum', 'mean'],
-        '時間': lambda x: (x.max() - x.min()).days + 1  # 交易跨度
+        '日期時間': lambda x: (x.max() - x.min()).days + 1  # 交易跨度
     }).round(2)
     
-    merchant_stats.columns = ['交易次数', '总金額', '平均金額', '交易跨度']
+    merchant_stats.columns = ['交易次數', '總金額', '平均金額', '交易跨度']
     
     # 识别常客商家(最近3個月有2次以上消费)
-    recent_date = df['時間'].max()
+    recent_date = df['日期時間'].max()
     three_months_ago = recent_date - pd.Timedelta(days=90)
-    recent_df = expense_df[expense_df['時間'] >= three_months_ago]
+    recent_df = expense_df[expense_df['日期時間'] >= three_months_ago]
     
     frequent_merchants = []
     for merchant, group in recent_df.groupby('商家'):
@@ -1998,7 +1922,7 @@ def analyze_merchants(df):
                 'name': merchant,
                 'amount': group['金額'].sum(),
                 'count': len(group),
-                'last_visit': group['時間'].max().strftime('%Y-%m-%d')
+                'last_visit': group['日期時間'].max().strftime('%Y-%m-%d')
             })
     
     # 按消费金額排序
@@ -2024,7 +1948,7 @@ def analyze_scenarios(df):
     )
     
     # 2. 消费時段分析
-    expense_df.loc[:, '消费時段'] = expense_df['時間'].dt.hour.map(
+    expense_df.loc[:, '消费時段'] = expense_df['日期時間'].dt.hour.map(
         lambda x: '清晨(6-9点)' if 6 <= x < 9
         else '上午(9-12点)' if 9 <= x < 12
         else '中午(12-14点)' if 12 <= x < 14
@@ -2079,22 +2003,22 @@ def analyze_habits(df):
     expense_df = df[df['記錄類型'] == '支出'].copy()
     
     # 1. 基础统计
-    daily_expenses = expense_df.groupby(expense_df['時間'].dt.date)['金額'].sum()
+    daily_expenses = expense_df.groupby(expense_df['日期時間'].dt.date)['金額'].sum()
     daily_avg = float(daily_expenses.mean())
     active_days = int(len(daily_expenses))
     
     # 2. 计算周末消费比例
-    weekend_expenses = expense_df[expense_df['時間'].dt.dayofweek.isin([5, 6])]['金額'].sum()
+    weekend_expenses = expense_df[expense_df['日期時間'].dt.dayofweek.isin([5, 6])]['金額'].sum()
     weekend_ratio = float((weekend_expenses / expense_df['金額'].sum() * 100))
     
     # 3. 计算固定支出比例
-    monthly_recurring = expense_df.groupby(['商家', expense_df['時間'].dt.month]).size()
+    monthly_recurring = expense_df.groupby(['商家', expense_df['日期時間'].dt.month]).size()
     recurring_merchants = monthly_recurring[monthly_recurring >= 2].index.get_level_values(0).unique()
     fixed_expenses = expense_df[expense_df['商家'].isin(recurring_merchants)]['金額'].sum()
     fixed_ratio = float((fixed_expenses / expense_df['金額'].sum() * 100))
     
     # 4. 计算月初消费比例
-    month_start = expense_df[expense_df['時間'].dt.day <= 5]['金額'].sum()
+    month_start = expense_df[expense_df['日期時間'].dt.day <= 5]['金額'].sum()
     month_start_ratio = float((month_start / expense_df['金額'].sum() * 100))
     
     return {
@@ -2119,10 +2043,10 @@ def generate_smart_tags(df):
     # 计算总体消费情况
     total_expense = expense_df['金額'].sum()
     avg_expense = expense_df['金額'].mean()
-    daily_expense = expense_df.groupby(expense_df['時間'].dt.date)['金額'].sum().mean()
+    daily_expense = expense_df.groupby(expense_df['日期時間'].dt.date)['金額'].sum().mean()
     
     # 時間模式分析
-    hour_stats = expense_df.groupby(expense_df['時間'].dt.hour).size()
+    hour_stats = expense_df.groupby(expense_df['日期時間'].dt.hour).size()
     peak_hours = hour_stats[hour_stats > hour_stats.mean()].index.tolist()
     
     if 22 in peak_hours or 23 in peak_hours:
@@ -2146,7 +2070,7 @@ def generate_smart_tags(df):
     result['spending_preference'] = f"最常消费的品类是{', '.join(preference_desc)}"
     
     # 消费規律分析
-    daily_expenses = expense_df.groupby(expense_df['時間'].dt.date)['金額'].sum()
+    daily_expenses = expense_df.groupby(expense_df['日期時間'].dt.date)['金額'].sum()
     cv = daily_expenses.std() / daily_expenses.mean()
     
     if cv < 0.5:
@@ -2189,7 +2113,7 @@ def analyze_payment_methods(df):
     # 基础统计
     payment_stats = expense_df.groupby('支付方式').agg({
         '金額': ['count', 'sum', 'mean'],
-        '時間': lambda x: x.dt.date.nunique()  # 使用天数
+        '日期時間': lambda x: x.dt.date.nunique()  # 使用天数
     })
     
     # 重命名列

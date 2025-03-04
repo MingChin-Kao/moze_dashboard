@@ -1235,21 +1235,21 @@
                     } else {
                         showToast('删除失败：' + data.error);
                         if (shouldCheckSession()) {
-                            startSessionCheck();  // 如果删除失败，重新启动检查
+                            // startSessionCheck();  // 如果删除失败，重新启动检查
                         }
                     }
                 } catch (error) {
                     console.error('Error:', error);
                     showToast('删除失败，请重试');
                     if (shouldCheckSession()) {
-                        startSessionCheck();  // 如果发生错误，重新启动检查
+                        // startSessionCheck();  // 如果发生错误，重新启动检查
                     }
                 }
             });
         }
 
         // 页面加载時启动检查
-        startSessionCheck();
+        // startSessionCheck();
     });
     </script>
 </body>

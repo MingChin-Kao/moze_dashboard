@@ -4,19 +4,19 @@
 
 {% block head %}
 <style>
-/* 基础样式变量 */
+/* 基礎樣式變量 */
 :root {
-    --primary-color: #0066FF;      /* Apple 蓝色 */
-    --success-color: #34C759;      /* Apple 绿色 */
-    --danger-color: #FF3B30;       /* Apple 红色 */
+    --primary-color: #0066FF;      /* Apple 藍色 */
+    --success-color: #34C759;      /* Apple 綠色 */
+    --danger-color: #FF3B30;       /* Apple 紅色 */
     --warning-color: #FF9500;      /* Apple 橙色 */
     --secondary-text: #8E8E93;     /* Apple 次要文本 */
-    --border-color: #E5E5EA;       /* Apple 边框色 */
+    --border-color: #E5E5EA;       /* Apple 邊框色 */
     --card-bg: #FFFFFF;
-    --hover-bg: #F2F2F7;          /* Apple 系统悬停色 */
+    --hover-bg: #F2F2F7;          /* Apple 系統懸停色 */
 }
 
-/* 页面标题和月份选择器样式 */
+/* 頁面標題和月份選擇器樣式 */
 .page-header {
     display: grid;
     grid-template-columns: 1fr auto 1fr;
@@ -40,7 +40,7 @@
     margin: 0;
 }
 
-/* 月份选择器样式 */
+/* 月份選擇器樣式 */
 .month-controls {
     display: flex;
     align-items: center;
@@ -94,7 +94,7 @@
     font-size: 16px;
 }
 
-/* 统计卡片样式 */
+/* 統計卡片樣式 */
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -137,7 +137,7 @@
     color: var(--secondary-text);
 }
 
-/* 添加环比变化样式 */
+/* 添加環比變化樣式 */
 .comparison {
     margin-top: 8px;
     padding-top: 8px;
@@ -179,7 +179,7 @@
     letter-spacing: -0.016em;
 }
 
-/* 图表容器样式 */
+/* 圖表容器樣式 */
 .chart-grid {
     margin-bottom: 24px;  /* 增加底部間距 */
 }
@@ -189,7 +189,7 @@
     border-radius: 16px;
     padding: 24px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    width: 100%;  /* 确保占满整行 */
+    width: 100%;  /* 確保占滿整行 */
 }
 
 .chart-header {
@@ -282,7 +282,7 @@
         </div>
         <div class="comparison">
             <i class="fas fa-arrow-down trend-icon down"></i>
-            <span class="change-value">較上月减少 0 元</span>
+            <span class="change-value">較上月減少 0 元</span>
         </div>
     </div>
     <div class="stat-card">
@@ -298,7 +298,7 @@
         </div>
     </div>
     <div class="stat-card">
-        <h3>交易情况</h3>
+        <h3>交易情況</h3>
         <div class="value" id="transactionCount">--</div>
         <div class="trend">
             <span id="transactionAvg">--</span>
@@ -335,7 +335,7 @@
 <div class="chart-grid">
     <div class="chart-card">
         <div class="chart-header">
-            <h2 class="chart-title">支出分类</h2>
+            <h2 class="chart-title">支出分類</h2>
         </div>
         <div class="chart-container" id="categoryPieChart"></div>
     </div>
@@ -348,20 +348,20 @@
     </button>
     <button class="filter-btn" data-filter="large">
         <i class="fas fa-arrow-trend-up"></i>
-        仅大额
+        僅大額
     </button>
     <button class="filter-btn" data-filter="small">
         <i class="fas fa-arrow-trend-down"></i>
-        仅小额
+        僅小額
     </button>
 </div>
 {% endblock %}
 
 {% block scripts %}
 <script>
-// 更新金额格式化函数
+// 更新金額格式化函數
 function formatMoney(value) {
-    // 如果是整数，不显示小数位
+    // 如果是整數，不顯示小數位
     if (Number.isInteger(value)) {
         return new Intl.NumberFormat('zh-CN', {
             minimumFractionDigits: 0,
@@ -369,7 +369,7 @@ function formatMoney(value) {
         }).format(value);
     }
     
-    // 如果有小数，最多显示两位小数，但不强制显示两位
+    // 如果有小數，最多顯示兩位小數，但不強制顯示兩位
     return new Intl.NumberFormat('zh-CN', {
         minimumFractionDigits: 0,
         maximumFractionDigits: 2
@@ -380,11 +380,11 @@ document.addEventListener('DOMContentLoaded', function() {
     let trendChart, categoryPieChart;
     let currentMonth;
     let availableMonths = [];
-    let currentData = null;  // 添加全局数据变量
-    let currentType = 'expense';  // 添加当前类型变量
-    let currentFilter = 'all';  // 添加当前筛选变量
+    let currentData = null;  // 添加全局數據變量
+    let currentType = 'expense';  // 添加當前類型變量
+    let currentFilter = 'all';  // 添加當前篩選變量
     
-    // 初始化图表
+    // 初始化圖表
     function initCharts() {
         trendChart = echarts.init(document.getElementById('trendChart'));
         categoryPieChart = echarts.init(document.getElementById('categoryPieChart'));
@@ -395,28 +395,28 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // 添加加载可用月份的函数
+    // 添加加載可用月份的函數
     function loadAvailableMonths() {
         fetch('/api/available_dates')
             .then(response => response.json())
             .then(data => {
                 availableMonths = data.months;
                 if (availableMonths.length > 0) {
-                    currentMonth = availableMonths[0];  // 设置初始月份为最新月份
-                    loadData();  // 加载数据
+                    currentMonth = availableMonths[0];  // 設置初始月份為最新月份
+                    loadData();  // 加載數據
                 }
             })
             .catch(error => {
                 console.error('Error loading available months:', error);
-                showToast('加载月份数据失败，请重试');
+                showToast('加載月份數據失敗，請重試');
             });
     }
     
-    // 加载数据
+    // 加載數據
     function loadData(month) {
         if (month) currentMonth = month;
         
-        // 添加防护，确保 currentMonth 存在
+        // 添加防護，確保 currentMonth 存在
         if (!currentMonth) {
             console.error('No month selected');
             return;
@@ -428,7 +428,7 @@ document.addEventListener('DOMContentLoaded', function() {
             month: monthNum
         });
         
-        // 添加金额筛选参数
+        // 添加金額篩選參數
         if (currentFilter === 'large') {
             params.append('min_amount', '1000');
         } else if (currentFilter === 'small') {
@@ -439,19 +439,19 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    currentData = data.data;  // 保存完整数据到全局变量
-                    updateStats(data.data.stats);  // 修改这里：传入 stats 对象
+                    currentData = data.data;  // 保存完整數據到全局變量
+                    updateStats(data.data.stats);  // 修改這里：傳入 stats 對象
                     updateCharts(data.data);
                     updateMonthControls();
                 }
             })
             .catch(error => {
                 console.error('Error loading data:', error);
-                showToast('加载数据失败，请重试');
+                showToast('加載數據失敗，請重試');
             });
     }
     
-    // 更新月份控制按钮状态
+    // 更新月份控制按鈕狀態
     function updateMonthControls() {
         const prevMonthBtn = document.getElementById('prevMonth');
         const nextMonthBtn = document.getElementById('nextMonth');
@@ -466,16 +466,16 @@ document.addEventListener('DOMContentLoaded', function() {
         monthDisplay.textContent = `${year}年${month}月`;
     }
     
-    // 更新统计卡片
+    // 更新統計卡片
     function updateStats(data) {
         const stats = data;
         
-        // 更新收支差额卡片
+        // 更新收支差額卡片
         const balance = stats.balance;
         document.getElementById('monthBalance').textContent = `${formatMoney(Math.abs(balance))} 元`;
         document.getElementById('balanceStatus').textContent = balance >= 0 ? '收大於支' : '支大於收';
         
-        // 修改这里：统一使用 toFixed(1) 显示一位小数
+        // 修改這里：統一使用 toFixed(1) 顯示一位小數
         const expenseRatio = (stats.total_expense / stats.total_income * 100).toFixed(1);
         if (stats.total_expense > stats.total_income) {
             document.getElementById('balanceRatio').textContent = `超支比例 ${expenseRatio}%`;
@@ -485,21 +485,21 @@ document.addEventListener('DOMContentLoaded', function() {
         
         document.getElementById('monthBalance').style.color = balance >= 0 ? 'var(--success-color)' : 'var(--danger-color)';
         
-        // 更新收支差额环比
+        // 更新收支差額環比
         updateComparison(
             document.querySelector('.stat-card:nth-child(1) .comparison'),
             stats.comparisons.balance.change,
             stats.comparisons.balance.rate,
-            '收支差额'
+            '收支差額'
         );
         
         // 更新支出卡片
         document.getElementById('monthExpense').textContent = `${formatMoney(stats.total_expense)} 元`;
         document.getElementById('expenseTrend').textContent = `${stats.expense_count} 筆支出`;
-        // 统一小数点位数
+        // 統一小數點位數
         document.getElementById('avgDailyExpense').textContent = `日均 ${formatMoney(stats.total_expense / 30)} 元`;
         
-        // 更新支出环比
+        // 更新支出環比
         updateComparison(
             document.querySelector('.stat-card:nth-child(2) .comparison'),
             stats.comparisons.expense.change,
@@ -510,10 +510,10 @@ document.addEventListener('DOMContentLoaded', function() {
         // 更新收入卡片
         document.getElementById('monthIncome').textContent = `${formatMoney(stats.total_income)} 元`;
         document.getElementById('incomeTrend').textContent = `${stats.income_count} 筆收入`;
-        // 统一小数点位数
+        // 統一小數點位數
         document.getElementById('avgIncome').textContent = `平均 ${formatMoney(stats.total_income / (stats.income_count || 1))} 元/筆`;
         
-        // 更新收入环比
+        // 更新收入環比
         updateComparison(
             document.querySelector('.stat-card:nth-child(3) .comparison'),
             stats.comparisons.income.change,
@@ -521,15 +521,15 @@ document.addEventListener('DOMContentLoaded', function() {
             '收入'
         );
         
-        // 更新交易情况卡片
+        // 更新交易情況卡片
         const totalCount = stats.expense_count + stats.income_count;
         document.getElementById('transactionCount').textContent = `${totalCount} 筆`;
-        // 统一小数点位数
+        // 統一小數點位數
         document.getElementById('transactionAvg').textContent = `平均 ${formatMoney((stats.total_expense + stats.total_income) / (totalCount || 1))} 元/筆`;
         document.getElementById('activeDays').textContent = `${30} 個交易日`;
     }
     
-    // 更新图表
+    // 更新圖表
     function updateCharts(data) {
         if (!data) return;
         
@@ -539,10 +539,10 @@ document.addEventListener('DOMContentLoaded', function() {
             ];
             return colors[index % colors.length];
         }
-        // 获取当前类型的日期数据
+        // 獲取當前類型的日期數據
         const dailyData = data.daily_data[currentType];
         
-        // 趨勢图配置
+        // 趨勢圖配置
         const trendOption = {
             tooltip: {
                 trigger: 'axis',
@@ -553,7 +553,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 formatter: function(params) {
                     const data = params[0];
                     return `${data.name}<br/>
-                            金额: ${formatMoney(data.value)} 元<br/>
+                            金額: ${formatMoney(data.value)} 元<br/>
                             ${data.seriesName}`;
                 }
             },
@@ -565,7 +565,7 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             xAxis: {
                 type: 'category',
-                data: dailyData.dates,  // 使用对应类型的日期数据
+                data: dailyData.dates,  // 使用對應類型的日期數據
                 axisLabel: {
                     formatter: (value) => value.split('-')[2],
                     interval: 'auto'
@@ -580,7 +580,7 @@ document.addEventListener('DOMContentLoaded', function() {
             series: [{
                 name: currentType === 'expense' ? '支出' : '收入',
                 type: 'bar',
-                data: dailyData.amounts,  // 使用对应类型的金额数据
+                data: dailyData.amounts,  // 使用對應類型的金額數據
                 itemStyle: {
                     color: currentType === 'expense' ? 'var(--danger-color)' : 'var(--success-color)',
                     borderRadius: [4, 4, 0, 0]
@@ -599,8 +599,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }]
         };
         
-        // 饼图配置
-        const categoryData = data.categories[currentType];  // 根据当前类型获取对应的分类数据
+        // 餅圖配置
+        const categoryData = data.categories[currentType];  // 根據當前類型獲取對應的分類數據
         const total = categoryData.amounts.reduce((a, b) => a + b, 0);
         
         const pieOption = {
@@ -608,7 +608,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 trigger: 'item',
                 formatter: function(params) {
                     const percent = ((params.value / total) * 100).toFixed(1);
-                    return `${params.name}<br/>金额：${formatMoney(params.value)} 元<br/>占比：${percent}%`;
+                    return `${params.name}<br/>金額：${formatMoney(params.value)} 元<br/>占比：${percent}%`;
                 }
             },
             legend: {
@@ -628,7 +628,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             },
             series: [{
-                name: currentType === 'expense' ? '支出分类' : '收入分类',
+                name: currentType === 'expense' ? '支出分類' : '收入分類',
                 type: 'pie',
                 radius: ['40%', '70%'],
                 center: ['35%', '50%'],
@@ -661,27 +661,27 @@ document.addEventListener('DOMContentLoaded', function() {
             }]
         };
         
-        // 修改趨勢图點擊事件
-        trendChart.off('click');  // 移除之前的事件绑定
+        // 修改趨勢圖點擊事件
+        trendChart.off('click');  // 移除之前的事件綁定
         trendChart.on('click', function(params) {
             if (params.componentType === 'series') {
                 const date = params.name;
-                const title = `${date} ${currentType === 'expense' ? '支出' : '收入'}明细`;
+                const title = `${date} ${currentType === 'expense' ? '支出' : '收入'}明細`;
                 
-                // 构建查询参数
+                // 構建查詢參數
                 const queryParams = new URLSearchParams({
                     date: date,
-                    type: currentType === 'expense' ? '支出' : '收入'  // 添加类型参数
+                    type: currentType === 'expense' ? '支出' : '收入'  // 添加類型參數
                 });
                 
-                // 添加金额筛选参数
+                // 添加金額篩選參數
                 if (currentFilter === 'large') {
                     queryParams.append('min_amount', '1000');
                 } else if (currentFilter === 'small') {
                     queryParams.append('max_amount', '1000');
                 }
                 
-                // 获取交易记录
+                // 獲取交易記錄
                 fetch(`/api/transactions?${queryParams}`)
                     .then(response => response.json())
                     .then(data => {
@@ -689,7 +689,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     })
                     .catch(error => {
                         console.error('Error fetching transaction data:', error);
-                        showToast('获取交易数据失败，请重试');
+                        showToast('獲取交易數據失敗，請重試');
                     });
             }
         });
@@ -698,7 +698,7 @@ document.addEventListener('DOMContentLoaded', function() {
         categoryPieChart.setOption(pieOption);
     }
     
-    // 绑定月份切换按钮事件
+    // 綁定月份切換按鈕事件
     document.getElementById('prevMonth').addEventListener('click', function() {
         if (!Array.isArray(availableMonths)) {
             console.error('availableMonths is not an array:', availableMonths);
@@ -721,53 +721,53 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // 绑定切换按钮事件
+    // 綁定切換按鈕事件
     document.querySelectorAll('.toggle-btn').forEach(btn => {
         btn.addEventListener('click', function() {
-            // 更新按钮状态
+            // 更新按鈕狀態
             document.querySelectorAll('.toggle-btn').forEach(b => 
                 b.classList.remove('active'));
             this.classList.add('active');
             
-            // 更新当前类型并重新渲染图表
+            // 更新當前類型並重新渲染圖表
             currentType = this.dataset.type;
             updateCharts(currentData);
         });
     });
     
-    // 添加筛选按钮事件监听
+    // 添加篩選按鈕事件監聽
     document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.addEventListener('click', function() {
-            // 更新按钮状态
+            // 更新按鈕狀態
             document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
             this.classList.add('active');
             
-            // 更新当前筛选状态
+            // 更新當前篩選狀態
             currentFilter = this.dataset.filter;
             
-            // 重新加载数据
+            // 重新加載數據
             loadData();
         });
     });
     
-    // 修改初始化顺序
+    // 修改初始化順序
     initCharts();
-    loadAvailableMonths();  // 改为先加载可用月份
+    loadAvailableMonths();  // 改為先加載可用月份
 });
 
-// 修改 updateComparison 函数中的百分比显示
+// 修改 updateComparison 函數中的百分比顯示
 function updateComparison(element, change, changeRate, label, isCount = false) {
     if (!element) return;
     
     const icon = element.querySelector('.trend-icon');
     const value = element.querySelector('.change-value');
     
-    // 设置显示阈值，小於这個值就显示"基本持平"
-    const threshold = isCount ? 5 : 100; // 金额阈值100元，筆数阈值5筆
+    // 設置顯示閾值，小於這個值就顯示"基本持平"
+    const threshold = isCount ? 5 : 100; // 金額閾值100元，筆數閾值5筆
     
     if (change === null || change === undefined) {
         icon.className = 'fas fa-minus trend-icon neutral';
-        value.textContent = '暂無对比数据';
+        value.textContent = '暫無對比數據';
         return;
     }
     
@@ -779,15 +779,15 @@ function updateComparison(element, change, changeRate, label, isCount = false) {
             icon.className = 'fas fa-arrow-up trend-icon up';
             let text = `較上月增加 ${isCount ? Math.abs(change) + ' 筆' : formatMoney(Math.abs(change)) + ' 元'}`;
             if (changeRate !== null && changeRate !== undefined) {
-                // 修改这里：使用 toFixed(1) 显示一位小数
+                // 修改這里：使用 toFixed(1) 顯示一位小數
                 text += ` (${changeRate > 0 ? '+' : ''}${changeRate.toFixed(1)}%)`;
             }
             value.textContent = text;
         } else {
             icon.className = 'fas fa-arrow-down trend-icon down';
-            let text = `較上月减少 ${isCount ? Math.abs(change) + ' 筆' : formatMoney(Math.abs(change)) + ' 元'}`;
+            let text = `較上月減少 ${isCount ? Math.abs(change) + ' 筆' : formatMoney(Math.abs(change)) + ' 元'}`;
             if (changeRate !== null && changeRate !== undefined) {
-                // 修改这里：使用 toFixed(1) 显示一位小数
+                // 修改這里：使用 toFixed(1) 顯示一位小數
                 text += ` (${changeRate.toFixed(1)}%)`;
             }
             value.textContent = text;

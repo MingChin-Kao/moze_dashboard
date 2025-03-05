@@ -8,42 +8,42 @@
     <!-- 添加全局 JavaScript 配置 -->
     <script>
         window.CATEGORY_COLORS = {
-            // 主要消费类别
-            '餐饮美食': '#FF3B30',      // Apple 红色
-            '酒店旅游': '#5856D6',      // Apple 紫色
-            '交通出行': '#007AFF',      // Apple 蓝色
-            '服饰装扮': '#FF9500',      // Apple 橙色
-            '日用百货': '#34C759',      // Apple 绿色
-            '数码电器': '#32ADE6',      // Apple 浅蓝色
+            // 主要消費類別
+            '餐飲美食': '#FF3B30',      // Apple 紅色
+            '酒店旅遊': '#5856D6',      // Apple 紫色
+            '交通出行': '#007AFF',      // Apple 藍色
+            '服飾裝扮': '#FF9500',      // Apple 橙色
+            '日用百貨': '#34C759',      // Apple 綠色
+            '數碼電器': '#32ADE6',      // Apple 淺藍色
             
-            // 生活服务类
-            '生活服务': '#FF2D55',      // Apple 粉红色
-            '爱车养车': '#AF52DE',      // Apple 深紫色
-            '运动户外': '#FFD60A',      // Apple 金色
+            // 生活服務類
+            '生活服務': '#FF2D55',      // Apple 粉紅色
+            '愛車養車': '#AF52DE',      // Apple 深紫色
+            '運動戶外': '#FFD60A',      // Apple 金色
             
-            // 文教娱乐类
-            '文化休闲': '#FF6B22',      // Apple 深橙色
-            '教育培训': '#64D2FF',      // Apple 天蓝色
+            // 文教娛樂類
+            '文化休閒': '#FF6B22',      // Apple 深橙色
+            '教育培訓': '#64D2FF',      // Apple 天藍色
             
-            // 居家类
-            '家居家装': '#BF5AF2',      // Apple 亮紫色
-            '住房物业': '#AC8E68',      // Apple 棕色
+            // 居家類
+            '家居家裝': '#BF5AF2',      // Apple 亮紫色
+            '住房物業': '#AC8E68',      // Apple 棕色
             
-            // 其他服务类
-            '医疗健康': '#30B0C7',      // Apple 青色
-            '充值缴费': '#66D4CF',      // Apple 薄荷绿
-            '公共服务': '#A7C538',      // Apple 草绿色
-            '商业服务': '#5E5CE6',      // Apple 靛蓝色
-            '信用借还': '#FF6482',      // Apple 玫瑰红
-            '母婴亲子': '#40C8E0',      // Apple 湖蓝色
+            // 其他服務類
+            '醫療健康': '#30B0C7',      // Apple 青色
+            '充值繳費': '#66D4CF',      // Apple 薄荷綠
+            '公共服務': '#A7C538',      // Apple 草綠色
+            '商業服務': '#5E5CE6',      // Apple 靛藍色
+            '信用借還': '#FF6482',      // Apple 玫瑰紅
+            '母嬰親子': '#40C8E0',      // Apple 湖藍色
             
-            // 添加收入分类颜色
-            '收入': '#34C759',      // Apple 绿色
-            '转账红包': '#FF9500',      // Apple 橙色
-            '保险': '#007AFF',      // Apple 蓝色
-            '其他': '#FF3B30',      // Apple 红色
+            // 添加收入分類顏色
+            '收入': '#34C759',      // Apple 綠色
+            '轉賬紅包': '#FF9500',      // Apple 橙色
+            '保險': '#007AFF',      // Apple 藍色
+            '其他': '#FF3B30',      // Apple 紅色
             
-            // 默认类别
+            // 默認類別
             '其他': '#8E8E93'           // Apple 中性灰
         };
 
@@ -54,43 +54,43 @@
 
     <style>
         :root {
-            /* Apple Design 颜色方案 */
+            /* Apple Design 顏色方案 */
             --sidebar-width: 240px;
             --header-height: 60px;
-            --primary-color: #007AFF;  /* Apple 蓝 */
-            --bg-color: #F5F5F7;       /* Apple 浅灰背景 */
+            --primary-color: #007AFF;  /* Apple 藍 */
+            --bg-color: #F5F5F7;       /* Apple 淺灰背景 */
             --card-bg: #FFFFFF;
             --text-color: #1D1D1F;     /* Apple 深色文本 */
             --secondary-text: #86868B;  /* Apple 次要文本 */
-            --border-color: #D2D2D7;   /* Apple 边框色 */
-            --hover-bg: #F5F5F7;       /* 悬停背景色 */
+            --border-color: #D2D2D7;   /* Apple 邊框色 */
+            --hover-bg: #F5F5F7;       /* 懸停背景色 */
 
-            /* 添加 Apple Design 字体变量 */
+            /* 添加 Apple Design 字體變量 */
             --font-family-display: -apple-system, 'SF Pro Display', 'SF Pro Icons', 'Helvetica Neue', Arial, sans-serif;
             --font-family-text: -apple-system, 'SF Pro Text', 'SF Pro Icons', 'Helvetica Neue', Arial, sans-serif;
             --font-family-mono: 'SF Mono', SFMono-Regular, ui-monospace, Menlo, Consolas, monospace;
 
-            /* 添加分类颜色变量 */
-            --category-color-food: #FF6B6B;          /* 餐饮美食 - 红色 */
-            --category-color-shopping: #4ECDC4;      /* 日用百货 - 青色 */
-            --category-color-clothes: #45B7D1;       /* 服饰装扮 - 蓝色 */
-            --category-color-transport: #96CEB4;     /* 交通出行 - 绿色 */
-            --category-color-entertainment: #FFBE0B;  /* 休闲娱乐 - 黄色 */
-            --category-color-sports: #FF9B71;        /* 运动健身 - 橙色 */
-            --category-color-house: #6C5B7B;         /* 住房物业 - 紫色 */
-            --category-color-utilities: #355C7D;     /* 水电煤气 - 深蓝 */
-            --category-color-communication: #FECEAB; /* 通讯物流 - 粉色 */
-            --category-color-medical: #FF847C;       /* 医疗健康 - 红橙 */
-            --category-color-education: #E84A5F;     /* 文教娱乐 - 深红 */
-            --category-color-business: #2A363B;      /* 商业服务 - 深灰 */
-            --category-color-other: #99B898;         /* 其他 - 灰绿 */
+            /* 添加分類顏色變量 */
+            --category-color-food: #FF6B6B;          /* 餐飲美食 - 紅色 */
+            --category-color-shopping: #4ECDC4;      /* 日用百貨 - 青色 */
+            --category-color-clothes: #45B7D1;       /* 服飾裝扮 - 藍色 */
+            --category-color-transport: #96CEB4;     /* 交通出行 - 綠色 */
+            --category-color-entertainment: #FFBE0B;  /* 休閒娛樂 - 黃色 */
+            --category-color-sports: #FF9B71;        /* 運動健身 - 橙色 */
+            --category-color-house: #6C5B7B;         /* 住房物業 - 紫色 */
+            --category-color-utilities: #355C7D;     /* 水電煤氣 - 深藍 */
+            --category-color-communication: #FECEAB; /* 通訊物流 - 粉色 */
+            --category-color-medical: #FF847C;       /* 醫療健康 - 紅橙 */
+            --category-color-education: #E84A5F;     /* 文教娛樂 - 深紅 */
+            --category-color-business: #2A363B;      /* 商業服務 - 深灰 */
+            --category-color-other: #99B898;         /* 其他 - 灰綠 */
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            -webkit-font-smoothing: antialiased;  /* 字体平滑 */
+            -webkit-font-smoothing: antialiased;  /* 字體平滑 */
             -moz-osx-font-smoothing: grayscale;
         }
 
@@ -103,14 +103,14 @@
             letter-spacing: -0.022em;
         }
 
-        /* 大标题样式 */
+        /* 大標題樣式 */
         h1, .page-title {
             font-family: var(--font-family-display);
             font-weight: 600;
             letter-spacing: -0.025em;
         }
 
-        /* 副标题样式 */
+        /* 副標題樣式 */
         h2, h3, h4 {
             font-family: var(--font-family-display);
             font-weight: 500;
@@ -123,7 +123,7 @@
             min-height: 100vh;
         }
 
-        /* 修改侧边栏样式 */
+        /* 修改側邊欄樣式 */
         .sidebar {
             position: fixed;
             left: 0;
@@ -147,6 +147,11 @@
             letter-spacing: -0.025em;
             color: var(--text-color);
         }
+
+        .logo i {
+            margin-right: 8px; /* 這樣 <i> 和 <span> 之間會有間距 */
+        }
+
 
         .nav-menu {
             padding: 8px 0;
@@ -185,16 +190,16 @@
             font-size: 16px;
         }
 
-        /* 修改主内容区域样式 */
+        /* 修改主內容區域樣式 */
         .content {
-            flex: 1;  /* 让内容区域填充剩余空間 */
-            margin-left: var(--sidebar-width);  /* 为侧边栏留出空間 */
+            flex: 1;  /* 讓內容區域填充剩余空間 */
+            margin-left: var(--sidebar-width);  /* 為側邊欄留出空間 */
             padding: 20px;
             background: var(--bg-color);
             min-height: 100vh;
         }
 
-        /* 卡片样式 */
+        /* 卡片樣式 */
         .card {
             background: var(--card-bg);
             border-radius: 12px;
@@ -253,30 +258,30 @@
             color: var(--secondary-text);
         }
 
-        .trend.up { color: #FF3B30; }   /* Apple 红色 */
-        .trend.down { color: #34C759; }  /* Apple 绿色 */
+        .trend.up { color: #FF3B30; }   /* Apple 紅色 */
+        .trend.down { color: #34C759; }  /* Apple 綠色 */
 
-        /* 图表容器样式 */
+        /* 圖表容器樣式 */
         .chart-container {
             width: 100%;
             height: 400px;
             margin-bottom: 24px;
         }
 
-        /* 响应式调整 */
+        /* 響應式調整 */
         @media (max-width: 768px) {
             .content {
-                margin-left: 60px;  /* 移动端侧边栏宽度 */
+                margin-left: 60px;  /* 移動端側邊欄寬度 */
             }
         }
 
-        /* 修改悬浮菜单样式 */
+        /* 修改懸浮菜單樣式 */
         .floating-menu {
             position: fixed;
             left: 0;
             bottom: 24px;
-            width: var(--sidebar-width);  /* 與侧边栏宽度相同 */
-            padding: 0 12px;  /* 添加内边距以确保按钮不会贴边 */
+            width: var(--sidebar-width);  /* 與側邊欄寬度相同 */
+            padding: 0 12px;  /* 添加內邊距以確保按鈕不會貼邊 */
             display: flex;
             flex-direction: column;
             gap: 8px;
@@ -313,48 +318,48 @@
             font-size: 16px;
         }
 
-        /* 数字和金额样式 */
+        /* 數字和金額樣式 */
         .value, .amount {
             font-family: var(--font-family-display);
             font-feature-settings: "tnum";
             letter-spacing: -0.025em;
         }
 
-        /* 小号文本样式 */
+        /* 小號文本樣式 */
         .trend, .secondary-text, .table-filters {
             font-family: var(--font-family-text);
             font-size: 13px;
             letter-spacing: -0.016em;
         }
 
-        /* 等宽字体（用於数字展示） */
+        /* 等寬字體（用於數字展示） */
         .monospace, .amount {
             font-family: var(--font-family-mono);
             font-feature-settings: "tnum";
         }
 
-        /* 表格样式 */
+        /* 表格樣式 */
         table {
             font-family: var(--font-family-text);
             font-size: 13px;
             letter-spacing: -0.016em;
         }
 
-        /* 图表标题样式 */
+        /* 圖表標題樣式 */
         .chart-title {
             font-family: var(--font-family-display);
             font-weight: 500;
             letter-spacing: -0.022em;
         }
 
-        /* 状态标签样式 */
+        /* 狀態標簽樣式 */
         .status-tag {
             font-family: var(--font-family-text);
             font-size: 12px;
             letter-spacing: -0.016em;
         }
 
-        /* 修改弹窗样式 */
+        /* 修改彈窗樣式 */
         .modal {
             position: fixed;
             top: 0;
@@ -365,7 +370,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 1100;  /* 增加 z-index，确保高於导航栏 */
+            z-index: 1100;  /* 增加 z-index，確保高於導航欄 */
         }
 
         .modal-content {
@@ -377,8 +382,8 @@
             max-height: 90vh;
             display: flex;
             flex-direction: column;
-            margin-left: var(--sidebar-width);  /* 添加这行，为侧边栏留出空間 */
-            margin-right: 20px;  /* 添加这行，右侧留出一些空間 */
+            margin-left: var(--sidebar-width);  /* 添加這行，為側邊欄留出空間 */
+            margin-right: 20px;  /* 添加這行，右側留出一些空間 */
         }
 
         .modal-header {
@@ -423,16 +428,16 @@
             flex: 1;
         }
 
-        /* 修改表格容器样式 */
+        /* 修改表格容器樣式 */
         .transaction-table {
             width: 100%;
-            overflow-x: auto;  /* 添加横向滚动 */
+            overflow-x: auto;  /* 添加橫向滾動 */
         }
 
         .transaction-table table {
             width: 100%;
             border-collapse: collapse;
-            white-space: nowrap;  /* 防止内容换行 */
+            white-space: nowrap;  /* 防止內容換行 */
         }
 
         .transaction-table th,
@@ -466,7 +471,7 @@
             font-feature-settings: "tnum";
         }
 
-        /* 优化弹窗样式 */
+        /* 優化彈窗樣式 */
         .modal-actions {
             display: flex;
             align-items: center;
@@ -502,7 +507,7 @@
             background: var(--hover-bg);
         }
 
-        /* 优化表格样式 */
+        /* 優化表格樣式 */
         .transaction-table th {
             padding: 12px;
             font-weight: 500;
@@ -584,7 +589,7 @@
             text-align: right;
         }
 
-        /* 添加提示框样式 */
+        /* 添加提示框樣式 */
         .toast {
             position: fixed;
             bottom: 20px;
@@ -599,7 +604,7 @@
             display: none;
         }
 
-        /* 全局加载状态样式 */
+        /* 全局加載狀態樣式 */
         .global-loader {
             position: fixed;
             top: 0;
@@ -637,7 +642,7 @@
             font-size: 14px;
         }
 
-        /* 引导提示样式 */
+        /* 引導提示樣式 */
         .guide-tip {
             position: fixed;
             padding: 16px;
@@ -680,7 +685,7 @@
             color: var(--secondary-text);
         }
 
-        /* 移动端优化 */
+        /* 移動端優化 */
         @media (max-width: 768px) {
             .sidebar {
                 width: 60px;
@@ -720,7 +725,7 @@
             }
         }
 
-        /* 错误提示样式 */
+        /* 錯誤提示樣式 */
         .error-message {
             background: #FEE2E2;
             border: 1px solid #FCA5A5;
@@ -738,7 +743,7 @@
             font-size: 16px;
         }
 
-        /* 移除之前的 container 样式 */
+        /* 移除之前的 container 樣式 */
         .container {
             width: 100%;
             box-sizing: border-box;
@@ -762,7 +767,7 @@
             <nav class="nav-menu">
                 <a href="{{ url_for('index') }}" class="nav-item {% if active_page == 'index' %}active{% endif %}">
                     <i class="fas fa-home"></i>
-                    <span>首页</span>
+                    <span>首頁</span>
                 </a>
                 <a href="{{ url_for('yearly') }}" class="nav-item {% if active_page == 'yearly' %}active{% endif %}">
                     <i class="fas fa-calendar-alt"></i>
@@ -774,7 +779,7 @@
                 </a>
                 <a href="{{ url_for('category') }}" class="nav-item {% if active_page == 'category' %}active{% endif %}">
                     <i class="fas fa-tags"></i>
-                    <span>分类分析</span>
+                    <span>分類分析</span>
                 </a>
                 <a href="{{ url_for('time') }}" class="nav-item {% if active_page == 'time' %}active{% endif %}">
                     <i class="fas fa-clock"></i>
@@ -805,17 +810,17 @@
         </button>
         <button class="filter-btn" data-filter="large">
             <i class="fas fa-coins"></i>
-            <span>僅大额交易</span>
+            <span>僅大額交易</span>
         </button>
         <button class="filter-btn" data-filter="small">
             <i class="fas fa-coffee"></i>
-            <span>僅小额交易</span>
+            <span>僅小額交易</span>
         </button>
     </div>
     <div id="detailModal" class="modal" style="display: none;">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title">交易详情</h2>
+                <h2 class="modal-title">交易詳情</h2>
                 <div class="modal-actions">
                     <div class="sort-controls">
                         <button class="sort-btn active" data-sort="time">
@@ -842,7 +847,7 @@
                                 <th>商品說明</th>
                                 <th>交易分類</th>
                                 <th class="sortable amount-column" data-sort="amount">
-                                    <span>金额</span>
+                                    <span>金額</span>
                                     <i class="fas fa-sort"></i>
                                 </th>
                             </tr>
@@ -857,15 +862,15 @@
     <!-- 添加提示框 -->
     <div id="toast" class="toast"></div>
 
-    <!-- 全局加载状态 -->
+    <!-- 全局加載狀態 -->
     <div id="globalLoader" class="global-loader" style="display: none;">
         <div class="loader-content">
             <div class="spinner"></div>
-            <div class="loader-text">加载中...</div>
+            <div class="loader-text">加載中...</div>
         </div>
     </div>
 
-    <!-- 全局引导提示 -->
+    <!-- 全局引導提示 -->
     <div id="guideTip" class="guide-tip" style="display: none;">
         <div class="guide-content">
             <div class="guide-text"></div>
@@ -878,15 +883,15 @@
 
     {% block scripts %}{% endblock %}
     <script>
-    // 修改显示弹窗函数
+    // 修改顯示彈窗函數
     function showTransactionModal(title, transactions) {
         const modal = document.getElementById('detailModal');
         const modalTitle = modal.querySelector('.modal-title');
         let currentSort = { field: 'time', direction: 'desc' };
-        let allTransactions = [...transactions];  // 保存所有交易记录的副本
+        let allTransactions = [...transactions];  // 保存所有交易記錄的副本
         let currentTransactions = [...transactions];
         
-        // 日期時間格式化函数
+        // 日期時間格式化函數
         function formatDateTime(dateStr) {
             try {
                 // 處理不同的日期格式
@@ -904,7 +909,7 @@
                     date = new Date(dateStr);
                 }
 
-                // 检查日期是否有效
+                // 檢查日期是否有效
                 if (isNaN(date.getTime())) {
                     throw new Error('Invalid date');
                 }
@@ -920,14 +925,14 @@
                 }).format(date);
             } catch (error) {
                 console.error('Date formatting error:', error);
-                return dateStr; // 如果格式化失败，返回原始字符串
+                return dateStr; // 如果格式化失敗，返回原始字符串
             }
         }
 
         function updateTable() {
             const transactionList = document.getElementById('transactionList');
             
-            // 排序逻辑
+            // 排序邏輯
             currentTransactions.sort((a, b) => {
                 if (currentSort.field === 'time') {
                     const timeA = new Date(a.time);
@@ -941,7 +946,7 @@
                 return 0;
             });
             
-            // 更新表格内容
+            // 更新表格內容
             transactionList.innerHTML = currentTransactions.map(t => `
                 <tr>
                     <td>${formatDateTime(t.time)}</td>
@@ -953,7 +958,7 @@
                 </tr>
             `).join('');
             
-            // 更新表头排序状态
+            // 更新表頭排序狀態
             modal.querySelectorAll('th.sortable').forEach(th => {
                 const sortField = th.dataset.sort;
                 const icon = th.querySelector('i');
@@ -966,14 +971,14 @@
                 }
             });
 
-            // 更新排序按钮状态
+            // 更新排序按鈕狀態
             modal.querySelectorAll('.sort-btn').forEach(btn => {
                 const sortField = btn.dataset.sort;
                 btn.classList.toggle('active', sortField === currentSort.field);
             });
         }
 
-        // 添加金额筛选處理函数
+        // 添加金額篩選處理函數
         function filterTransactions(filterType) {
             if (filterType === 'all') {
                 currentTransactions = [...allTransactions];
@@ -985,15 +990,15 @@
             updateTable();
         }
 
-        // 绑定金额筛选按钮事件
+        // 綁定金額篩選按鈕事件
         document.querySelectorAll('.filter-btn').forEach(btn => {
             btn.addEventListener('click', function() {
-                // 更新按钮状态
+                // 更新按鈕狀態
                 document.querySelectorAll('.filter-btn').forEach(b => 
                     b.classList.remove('active'));
                 this.classList.add('active');
                 
-                // 应用筛选
+                // 應用篩選
                 filterTransactions(this.dataset.filter);
             });
         });
@@ -1001,11 +1006,11 @@
         modalTitle.textContent = title;
         modal.style.display = 'flex';
         
-        // 移除之前的事件监听器
+        // 移除之前的事件監聽器
         const sortBtns = modal.querySelectorAll('.sort-btn');
         const sortableHeaders = modal.querySelectorAll('th.sortable');
         
-        // 清除之前的事件监听器
+        // 清除之前的事件監聽器
         sortBtns.forEach(btn => {
             btn.replaceWith(btn.cloneNode(true));
         });
@@ -1013,7 +1018,7 @@
             th.replaceWith(th.cloneNode(true));
         });
         
-        // 重新绑定排序按钮事件
+        // 重新綁定排序按鈕事件
         modal.querySelectorAll('.sort-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 const sortField = this.dataset.sort;
@@ -1026,7 +1031,7 @@
             });
         });
         
-        // 重新绑定表头排序事件
+        // 重新綁定表頭排序事件
         modal.querySelectorAll('th.sortable').forEach(th => {
             th.addEventListener('click', function() {
                 const sortField = this.dataset.sort;
@@ -1043,19 +1048,19 @@
         updateTable();
     }
 
-    // 关闭弹窗
+    // 關閉彈窗
     document.querySelector('.modal-close').addEventListener('click', function() {
         document.getElementById('detailModal').style.display = 'none';
     });
 
-    // 點擊弹窗外部关闭
+    // 點擊彈窗外部關閉
     document.getElementById('detailModal').addEventListener('click', function(e) {
         if (e.target === this) {
             this.style.display = 'none';
         }
     });
 
-    // 添加键盘事件监听，按ESC关闭弹窗
+    // 添加鍵盤事件監聽，按ESC關閉彈窗
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
             document.getElementById('detailModal').style.display = 'none';
@@ -1069,7 +1074,7 @@
         return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
     }
 
-    // 显示提示信息
+    // 顯示提示信息
     function showToast(message, duration = 3000) {
         const toast = document.getElementById('toast');
         toast.textContent = message;
@@ -1079,9 +1084,9 @@
         }, duration);
     }
 
-    // 全局加载状态控制
+    // 全局加載狀態控制
     const globalLoader = {
-        show: function(text = '加载中...') {
+        show: function(text = '加載中...') {
             const loader = document.getElementById('globalLoader');
             loader.querySelector('.loader-text').textContent = text;
             loader.style.display = 'flex';
@@ -1091,7 +1096,7 @@
         }
     };
 
-    // 引导提示控制
+    // 引導提示控制
     const guideTip = {
         currentStep: 0,
         steps: [],
@@ -1121,12 +1126,12 @@
             tip.style.display = 'block';
             tip.querySelector('.guide-text').textContent = step.text;
             
-            // 计算提示框位置
+            // 計算提示框位置
             const tipRect = tip.getBoundingClientRect();
             let top = rect.bottom + 8;
             let left = rect.left;
             
-            // 确保提示框在可视区域内
+            // 確保提示框在可視區域內
             if (top + tipRect.height > window.innerHeight) {
                 top = rect.top - tipRect.height - 8;
             }
@@ -1148,7 +1153,7 @@
         }
     };
 
-    // 错误處理
+    // 錯誤處理
     function showError(message, container) {
         const errorDiv = document.createElement('div');
         errorDiv.className = 'error-message';
@@ -1171,7 +1176,7 @@
         }, 5000);
     }
 
-    // 移动端菜单控制
+    // 移動端菜單控制
     function initMobileMenu() {
         const toggle = document.createElement('button');
         toggle.className = 'mobile-menu-toggle';
@@ -1184,12 +1189,12 @@
         document.body.appendChild(toggle);
     }
 
-    // 在移动端初始化菜单
+    // 在移動端初始化菜單
     if (window.innerWidth <= 768) {
         initMobileMenu();
     }
 
-    // 添加网络错误重试机制
+    // 添加網絡錯誤重試機制
     async function fetchWithRetry(url, options = {}, retries = 3) {
         try {
             const response = await fetch(url, options);
@@ -1210,21 +1215,21 @@
         let sessionCheckTimer = null;
         const CHECK_INTERVAL = 15000; // 15秒
         
-        // 检查当前页面是否需要会话检查
+        // 檢查當前頁面是否需要會話檢查
         function shouldCheckSession() {
             const noCheckPaths = ['/', '/settings', '/index'];
             return !noCheckPaths.includes(window.location.pathname);
         }
 
 
-        // 處理手动删除
+        // 處理手動刪除
         const deleteAllBtn = document.getElementById('deleteAllBtn');
         if (deleteAllBtn) {
             deleteAllBtn.addEventListener('click', async function() {
-                if (!confirm('确定要删除所有账单数据吗？此操作不可恢复！')) return;
+                if (!confirm('確定要刪除所有賬單數據嗎？此操作不可恢覆！')) return;
                 
                 try {
-                    stopSessionCheck();  // 停止检查
+                    stopSessionCheck();  // 停止檢查
                     const response = await fetch('/api/clear_data', {
                         method: 'POST'
                     });
@@ -1233,22 +1238,22 @@
                     if (data.success) {
                         window.location.href = '/';
                     } else {
-                        showToast('删除失败：' + data.error);
+                        showToast('刪除失敗：' + data.error);
                         if (shouldCheckSession()) {
-                            // startSessionCheck();  // 如果删除失败，重新启动检查
+                            // startSessionCheck();  // 如果刪除失敗，重新啟動檢查
                         }
                     }
                 } catch (error) {
                     console.error('Error:', error);
-                    showToast('删除失败，请重试');
+                    showToast('刪除失敗，請重試');
                     if (shouldCheckSession()) {
-                        // startSessionCheck();  // 如果发生错误，重新启动检查
+                        // startSessionCheck();  // 如果發生錯誤，重新啟動檢查
                     }
                 }
             });
         }
 
-        // 页面加载時启动检查
+        // 頁面加載時啟動檢查
         // startSessionCheck();
     });
     </script>

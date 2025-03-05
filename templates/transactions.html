@@ -1,22 +1,22 @@
 {% extends "base.html" %}
 
-{% block title %}交易记录{% endblock %}
+{% block title %}交易記錄{% endblock %}
 
 {% block head %}
 <style>
-/* 基础样式变量 */
+/* 基礎樣式變量 */
 :root {
-    --primary-color: #0066FF;      /* Apple 蓝色 */
-    --success-color: #34C759;      /* Apple 绿色 */
-    --danger-color: #FF3B30;       /* Apple 红色 */
+    --primary-color: #0066FF;      /* Apple 藍色 */
+    --success-color: #34C759;      /* Apple 綠色 */
+    --danger-color: #FF3B30;       /* Apple 紅色 */
     --warning-color: #FF9500;      /* Apple 橙色 */
     --secondary-text: #8E8E93;     /* Apple 次要文本 */
-    --border-color: #E5E5EA;       /* Apple 边框色 */
+    --border-color: #E5E5EA;       /* Apple 邊框色 */
     --card-bg: #FFFFFF;
-    --hover-bg: #F2F2F7;          /* Apple 系统悬停色 */
+    --hover-bg: #F2F2F7;          /* Apple 系統懸停色 */
 }
 
-/* 页面标题样式 */
+/* 頁面標題樣式 */
 .page-header {
     display: grid;
     grid-template-columns: 1fr auto 1fr;
@@ -136,11 +136,11 @@
 }
 
 .amount.income {
-    color: #34C759;  /* Apple 绿色 */
+    color: #34C759;  /* Apple 綠色 */
 }
 
 .amount.expense {
-    color: #FF3B30;  /* Apple 红色 */
+    color: #FF3B30;  /* Apple 紅色 */
 }
 
 .status-tag {
@@ -215,7 +215,7 @@
     color: var(--text-color);
 }
 
-/* 添加统计摘要样式 */
+/* 添加統計摘要樣式 */
 .stats-summary {
     display: flex;
     justify-content: space-around;
@@ -245,21 +245,21 @@
 
 {% block content %}
 <div class="page-header">
-    <h1 class="page-title">交易记录</h1>
+    <h1 class="page-title">交易記錄</h1>
 </div>
 
 <div class="card">
     <div class="table-header">
-        <h3>交易明细</h3>
+        <h3>交易明細</h3>
         <div class="table-filters">
             <select id="monthFilter">
                 <option value="">全部月份</option>
             </select>
             <select id="categoryFilter">
-                <option value="">全部分类</option>
+                <option value="">全部分類</option>
             </select>
             <select id="typeFilter">
-                <option value="">全部类型</option>
+                <option value="">全部類型</option>
                 <option value="收入">收入</option>
                 <option value="支出">支出</option>
             </select>
@@ -271,23 +271,23 @@
             <thead>
                 <tr>
                     <th>交易時間</th>
-                    <th>商品说明</th>
-                    <th>交易对方</th>
-                    <th>分类</th>
+                    <th>商品說明</th>
+                    <th>交易對方</th>
+                    <th>分類</th>
                     <th>收/支</th>
-                    <th>金额</th>
-                    <th>状态</th>
+                    <th>金額</th>
+                    <th>狀態</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- 数据将通過 JavaScript 动态加载 -->
+                <!-- 數據將通過 JavaScript 動態加載 -->
             </tbody>
         </table>
     </div>
     <div class="table-pagination">
-        <button id="prevPage" disabled>上一页</button>
-        <span id="pageInfo">第 1 页</span>
-        <button id="nextPage">下一页</button>
+        <button id="prevPage" disabled>上一頁</button>
+        <span id="pageInfo">第 1 頁</span>
+        <button id="nextPage">下一頁</button>
     </div>
 </div>
 {% endblock %}
@@ -299,12 +299,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const perPage = 20;
     let currentFilter = 'all';
     
-    // 加载交易记录
+    // 加載交易記錄
     function loadTransactions(page = 1) {
-        // 显示加载状态
-        globalLoader.show('加载交易记录...');
+        // 顯示加載狀態
+        globalLoader.show('加載交易記錄...');
         
-        // 构建查询参数
+        // 構建查詢參數
         const params = new URLSearchParams({
             page: page,
             per_page: perPage,
@@ -314,7 +314,7 @@ document.addEventListener('DOMContentLoaded', function() {
             search: document.getElementById('searchInput').value
         });
 
-        // 添加金额筛选参数
+        // 添加金額篩選參數
         if (currentFilter === 'large') {
             params.append('min_amount', '1000');
         } else if (currentFilter === 'small') {
@@ -329,7 +329,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     return;
                 }
 
-                // 更新表格内容
+                // 更新表格內容
                 const tbody = document.querySelector('#transactionTable tbody');
                 tbody.innerHTML = data.transactions.map(t => `
                     <tr>
@@ -349,11 +349,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     </tr>
                 `).join('');
 
-                // 更新分页信息
+                // 更新分頁信息
                 updatePagination(data.pagination);
             })
             .catch(error => {
-                showError('加载数据失败，请重试');
+                showError('加載數據失敗，請重試');
                 console.error('Error:', error);
             })
             .finally(() => {
@@ -361,21 +361,21 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     }
 
-    // 更新分页控件
+    // 更新分頁控件
     function updatePagination(pagination) {
         const { current_page, total_pages, total_records } = pagination;
         currentPage = current_page;
 
-        // 更新页码信息
+        // 更新頁碼信息
         document.getElementById('pageInfo').textContent = 
-            `第 ${current_page} 页 / 共 ${total_pages} 页 (${total_records} 条记录)`;
+            `第 ${current_page} 頁 / 共 ${total_pages} 頁 (${total_records} 條記錄)`;
 
-        // 更新按钮状态
+        // 更新按鈕狀態
         document.getElementById('prevPage').disabled = current_page <= 1;
         document.getElementById('nextPage').disabled = current_page >= total_pages;
     }
 
-    // 绑定分页按钮事件
+    // 綁定分頁按鈕事件
     document.getElementById('prevPage').addEventListener('click', () => {
         if (currentPage > 1) {
             loadTransactions(currentPage - 1);
@@ -386,14 +386,14 @@ document.addEventListener('DOMContentLoaded', function() {
         loadTransactions(currentPage + 1);
     });
 
-    // 绑定筛选器事件
+    // 綁定篩選器事件
     document.querySelectorAll('.table-filters select, .table-filters input').forEach(element => {
         element.addEventListener('change', () => loadTransactions(1));
     });
 
     document.getElementById('searchInput').addEventListener('input', debounce(() => loadTransactions(1), 500));
 
-    // 防抖函数
+    // 防抖函數
     function debounce(func, wait) {
         let timeout;
         return function executedFunction(...args) {
@@ -406,23 +406,23 @@ document.addEventListener('DOMContentLoaded', function() {
         };
     }
 
-    // 绑定筛选按钮事件
+    // 綁定篩選按鈕事件
     document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.addEventListener('click', function() {
-            // 更新按钮状态
+            // 更新按鈕狀態
             document.querySelectorAll('.filter-btn').forEach(b => 
                 b.classList.remove('active'));
             this.classList.add('active');
             
-            // 更新当前筛选状态
+            // 更新當前篩選狀態
             currentFilter = this.dataset.filter;
             
-            // 重新加载数据
+            // 重新加載數據
             loadTransactions(1);
         });
     });
 
-    // 初始加载
+    // 初始加載
     loadTransactions();
 });
 </script>

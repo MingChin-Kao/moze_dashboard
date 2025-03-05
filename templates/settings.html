@@ -1,22 +1,22 @@
 {% extends "base.html" %}
 
-{% block title %}设置{% endblock %}
+{% block title %}設置{% endblock %}
 
 {% block head %}
 <style>
-/* 基础样式变量 */
+/* 基礎樣式變量 */
 :root {
-    --primary-color: #0066FF;      /* Apple 蓝色 */
-    --success-color: #34C759;      /* Apple 绿色 */
-    --danger-color: #FF3B30;       /* Apple 红色 */
+    --primary-color: #0066FF;      /* Apple 藍色 */
+    --success-color: #34C759;      /* Apple 綠色 */
+    --danger-color: #FF3B30;       /* Apple 紅色 */
     --warning-color: #FF9500;      /* Apple 橙色 */
     --secondary-text: #8E8E93;     /* Apple 次要文本 */
-    --border-color: #E5E5EA;       /* Apple 边框色 */
+    --border-color: #E5E5EA;       /* Apple 邊框色 */
     --card-bg: #FFFFFF;
-    --hover-bg: #F2F2F7;          /* Apple 系统悬停色 */
+    --hover-bg: #F2F2F7;          /* Apple 系統懸停色 */
 }
 
-/* 页面标题样式 */
+/* 頁面標題樣式 */
 .page-header {
     display: grid;
     grid-template-columns: 1fr auto 1fr;
@@ -160,7 +160,7 @@
     opacity: 1;
 }
 
-/* 添加隐私声明样式 */
+/* 添加隱私聲明樣式 */
 .privacy-notice {
     background: var(--card-bg);
     border-radius: 16px;
@@ -204,7 +204,7 @@
     left: 0;
 }
 
-/* 添加上傳指南样式 */
+/* 添加上傳指南樣式 */
 .upload-guide {
     background: var(--hover-bg);
     border-radius: 12px;
@@ -230,7 +230,7 @@
     margin-bottom: 8px;
 }
 
-/* 添加文件上傳进度条样式 */
+/* 添加文件上傳進度條樣式 */
 .upload-progress {
     width: 100%;
     height: 4px;
@@ -248,7 +248,7 @@
     transition: width 0.3s ease;
 }
 
-/* 添加文件大小提示样式 */
+/* 添加文件大小提示樣式 */
 .file-size-warning {
     color: var(--warning-color);
     font-size: 12px;
@@ -256,14 +256,14 @@
     display: none;
 }
 
-/* 添加拖拽状态样式 */
+/* 添加拖拽狀態樣式 */
 .file-upload.dragover {
     border-color: var(--primary-color);
     background: rgba(0, 102, 255, 0.05);
     transform: scale(1.02);
 }
 
-/* 移动端优化 */
+/* 移動端優化 */
 @media (max-width: 768px) {
     .upload-section {
         padding: 16px;
@@ -296,7 +296,7 @@
     }
 }
 
-/* 添加计時器样式 */
+/* 添加計時器樣式 */
 .session-timer {
     background: var(--hover-bg);
     padding: 8px 16px;
@@ -313,7 +313,7 @@
     color: var(--primary-color);
 }
 
-/* 更新提示样式 */
+/* 更新提示樣式 */
 .alert-message {
     background: #E8F4FD;
     border: 1px solid #BAE3FF;
@@ -361,7 +361,7 @@
     }
 }
 
-/* 添加闪烁动画 */
+/* 添加閃爍動畫 */
 @keyframes pulse {
     0% { opacity: 1; }
     50% { opacity: 0.7; }
@@ -372,7 +372,7 @@
     animation: pulse 2s infinite;
 }
 
-/* 在 upload-section 后面添加删除区域 */
+/* 在 upload-section 後面添加刪除區域 */
 .delete-section {
     background: var(--card-bg);
     border-radius: 16px;
@@ -428,11 +428,11 @@
         <i class="fas fa-exclamation-circle"></i>
     </div>
     <div class="alert-content">
-        <div class="alert-title">需要上傳数据</div>
+        <div class="alert-title">需要上傳數據</div>
         <div class="alert-description">
-            请先上傳支付宝账单文件，系统将为您生成详细的消费分析报告。
+            請先上傳MOZE賬單文件，系統將為您生成詳細的消費分析報告。
             <br>
-            上傳后的数据将在本地进行分析，30分钟后自动清除，请放心使用。
+            上傳後的數據將在本地進行分析，30分鐘後自動清除，請放心使用。
         </div>
     </div>
 </div>
@@ -443,23 +443,23 @@
 </div>
 
 <div class="upload-section">
-    <h2 class="upload-title">上傳账单文件</h2>
+    <h2 class="upload-title">上傳賬單文件</h2>
     <div class="session-timer">
         <i class="fas fa-clock"></i>
-        <span>会话剩余時間: <span id="timeRemaining">--:--</span></span>
+        <span>會話剩余時間: <span id="timeRemaining">--:--</span></span>
     </div>
     <p class="upload-description">
-        支持上傳支付宝账单CSV文件。请确保文件包含必要的字段：交易時間、交易分类、收/支、金额、商品说明、交易状态、交易对方。
+        支持上傳MOZE賬單CSV文件。請確保文件包含必要的字段：交易時間、交易分類、收/支、金額、商品說明、交易狀態、交易對方。
     </p>
     
     <div class="upload-guide">
-        <h3>如何获取支付宝账单？</h3>
+        <h3>如何獲取MOZE賬單？</h3>
         <ol>
-            <li>打开支付宝 App -> 我的 -> 账单</li>
-            <li>右上角 ... -> 开具交易流水证明 -> 用於個人对账 -> 申请</li>
-            <li>自定义時間范围（最长为一年） -> 填写邮箱 -> 下载账单</li>
-            <li>申请记录中找到解压密码 -> 解压下载的文件，获取 CSV 文件</li>
-            <li>按年份重命名为【alipay_record_2024.csv】格式</li>
+            <li>打開MOZE App -> 我的 -> 賬單</li>
+            <li>右上角 ... -> 開具交易流水證明 -> 用於個人對賬 -> 申請</li>
+            <li>自定義時間範圍（最長為一年） -> 填寫郵箱 -> 下載賬單</li>
+            <li>申請記錄中找到解壓密碼 -> 解壓下載的文件，獲取 CSV 文件</li>
+            <li>按年份重命名為【alipay_record_2024.csv】格式</li>
         </ol>
     </div>
     
@@ -475,19 +475,19 @@
     </label>
 
     <div class="file-list" id="fileList">
-        <!-- 已上傳文件列表将通過 JavaScript 动态添加 -->
+        <!-- 已上傳文件列表將通過 JavaScript 動態添加 -->
     </div>
 </div>
 
-<!-- 在 upload-section 后面添加删除区域 -->
+<!-- 在 upload-section 後面添加刪除區域 -->
 <div class="delete-section">
-    <h2 class="section-title">数据管理</h2>
+    <h2 class="section-title">數據管理</h2>
     <div class="delete-area">
         <button id="deleteAllBtn" class="delete-all-btn">
             <i class="fas fa-trash-alt"></i>
-            删除所有账单数据
+            刪除所有賬單數據
         </button>
-        <p class="delete-warning">删除后将清空所有已上傳的账单文件和分析数据，此操作不可恢复。</p>
+        <p class="delete-warning">刪除後將清空所有已上傳的賬單文件和分析數據，此操作不可恢覆。</p>
     </div>
 </div>
 {% endblock %}
@@ -500,7 +500,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const fileList = document.getElementById('fileList');
     const maxFileSize = 16 * 1024 * 1024; // 16MB
 
-    // 添加文件大小检查
+    // 添加文件大小檢查
     function checkFileSize(file) {
         if (file.size > maxFileSize) {
             showError(`文件 ${file.name} 超過大小限制（16MB）`, uploadArea);
@@ -519,7 +519,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const fileItem = createFileItem(file.name, '準備上傳...');
         fileList.appendChild(fileItem);
 
-        // 添加进度条
+        // 添加進度條
         const progressDiv = document.createElement('div');
         progressDiv.className = 'upload-progress';
         progressDiv.innerHTML = '<div class="progress-bar"></div>';
@@ -542,17 +542,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 showError(data.error);
             }
         } catch (error) {
-            updateFileItem(fileItem, file.name, false, '上傳失败，请重试');
-            showError('网络错误，请重试');
+            updateFileItem(fileItem, file.name, false, '上傳失敗，請重試');
+            showError('網絡錯誤，請重試');
         }
     }
 
-    // 添加移动端检测
+    // 添加移動端檢測
     function isMobile() {
         return window.innerWidth <= 768;
     }
 
-    // 根据设备类型调整界面
+    // 根據設備類型調整界面
     function adjustForDevice() {
         if (isMobile()) {
             uploadArea.querySelector('.upload-text').innerHTML = '點擊上傳文件<br><span style="font-size: 12px; opacity: 0.7;">支持 CSV 格式，最大 16MB</span>';
@@ -561,11 +561,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // 监听窗口大小变化
+    // 監聽窗口大小變化
     window.addEventListener('resize', adjustForDevice);
     adjustForDevice();
 
-    // 优化拖拽效果
+    // 優化拖拽效果
     uploadArea.addEventListener('dragover', (e) => {
         e.preventDefault();
         uploadArea.classList.add('dragover');
@@ -583,12 +583,12 @@ document.addEventListener('DOMContentLoaded', function() {
         handleFiles(files);
     });
 
-    // 處理文件选择
+    // 處理文件選擇
     fileInput.addEventListener('change', (e) => {
         handleFiles(e.target.files);
     });
 
-    // 加载现有文件列表
+    // 加載現有文件列表
     loadExistingFiles();
 
     function handleFiles(files) {
@@ -641,7 +641,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     window.deleteFile = function(filename) {
-        if (confirm(`确定要删除文件 ${filename} 吗？`)) {
+        if (confirm(`確定要刪除文件 ${filename} 嗎？`)) {
             fetch(`/api/files/${filename}`, {
                 method: 'DELETE'
             })
@@ -659,49 +659,49 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // 修改计時器更新函数
+    // 修改計時器更新函數
     function updateTimer() {
         if (window.isRedirecting) return;
     }
     
-    // 在文件上傳成功時开始计時
+    // 在文件上傳成功時開始計時
     function handleUploadSuccess() {
-        // 标记正在上傳状态
+        // 標記正在上傳狀態
         localStorage.setItem('isUploading', 'true');
         updateTimer();
         setInterval(updateTimer, 1000);
     }
 
-    // 在页面加载時检查是否需要开始计時
+    // 在頁面加載時檢查是否需要開始計時
     if (localStorage.getItem('isUploading')) {
         updateTimer();
         setInterval(updateTimer, 1000);
     }
 
-    // 添加删除按钮事件處理
+    // 添加刪除按鈕事件處理
     document.getElementById('deleteAllBtn').addEventListener('click', function() {
-        if (confirm('确定要删除所有账单数据吗？此操作不可恢复！')) {
+        if (confirm('確定要刪除所有賬單數據嗎？此操作不可恢覆！')) {
             fetch('/api/clear_data', {
                 method: 'POST'
             })
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    // 清除本地存储的上傳状态
+                    // 清除本地存儲的上傳狀態
                     localStorage.removeItem('isUploading');
                     // 刷新文件列表
                     fileList.innerHTML = '';
-                    // 重置计時器显示
+                    // 重置計時器顯示
                     document.getElementById('timeRemaining').textContent = '--:--';
-                    // 显示成功提示
-                    showToast('所有数据已清除');
+                    // 顯示成功提示
+                    showToast('所有數據已清除');
                 } else {
-                    showToast('删除失败：' + data.error);
+                    showToast('刪除失敗：' + data.error);
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                showToast('删除失败，请重试');
+                showToast('刪除失敗，請重試');
             });
         }
     });

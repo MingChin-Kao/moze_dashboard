@@ -1,22 +1,22 @@
 {% extends "base.html" %}
 
-{% block title %}分类分析{% endblock %}
+{% block title %}分類分析{% endblock %}
 
 {% block head %}
 <style>
-/* 基础样式变量 */
+/* 基礎樣式變量 */
 :root {
-    --primary-color: #0066FF;      /* Apple 蓝色 */
-    --success-color: #34C759;      /* Apple 绿色 */
-    --danger-color: #FF3B30;       /* Apple 红色 */
+    --primary-color: #0066FF;      /* Apple 藍色 */
+    --success-color: #34C759;      /* Apple 綠色 */
+    --danger-color: #FF3B30;       /* Apple 紅色 */
     --warning-color: #FF9500;      /* Apple 橙色 */
     --secondary-text: #8E8E93;     /* Apple 次要文本 */
-    --border-color: #E5E5EA;       /* Apple 边框色 */
+    --border-color: #E5E5EA;       /* Apple 邊框色 */
     --card-bg: #FFFFFF;
-    --hover-bg: #F2F2F7;          /* Apple 系统悬停色 */
+    --hover-bg: #F2F2F7;          /* Apple 系統懸停色 */
 }
 
-/* 页面布局样式 */
+/* 頁面布局樣式 */
 .page-header {
     display: grid;
     grid-template-columns: auto minmax(auto, 300px) auto minmax(auto, 300px); /* 四列布局 */
@@ -33,7 +33,7 @@
     background-color: rgba(245, 245, 247, 0.8);
 }
 
-/* 标题保持左对齐 */
+/* 標題保持左對齊 */
 .page-title {
     font-size: 28px;
     font-weight: 600;
@@ -41,7 +41,7 @@
     margin: 0;
 }
 
-/* 分类选择器居中 */
+/* 分類選擇器居中 */
 .category-selector {
     justify-self: center;  /* 在第二列中居中 */
     position: relative;
@@ -51,17 +51,17 @@
     align-items: center;
 }
 
-/* 当前选中的分类容器 */
+/* 當前選中的分類容器 */
 #selectedCategory {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100%;  /* 继承父容器高度 */
+    height: 100%;  /* 繼承父容器高度 */
 }
 
-/* 修改分类选择器的内边距，减小整体高度 */
+/* 修改分類選擇器的內邊距，減小整體高度 */
 #selectedCategory .category-pill {
-    padding: 6px 16px;  /* 减小内边距 */
+    padding: 6px 16px;  /* 減小內邊距 */
     font-size: 20px;
     height: 36px;  /* 固定高度 */
     display: flex;
@@ -69,11 +69,11 @@
 }
 
 #selectedCategory .category-pill .icon {
-    width: 10px;         /* 减小图标，从12px改为10px */
+    width: 10px;         /* 減小圖標，從12px改為10px */
     height: 10px;
 }
 
-/* 分类标签网格 */
+/* 分類標簽網格 */
 .category-pills {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
@@ -82,7 +82,7 @@
     transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
-/* 展开時的分类选择面板 */
+/* 展開時的分類選擇面板 */
 .category-expanded {
     position: absolute;
     top: calc(100% + 8px); /* 保持原有間距 */
@@ -102,27 +102,27 @@
     max-width: 90vw;
 }
 
-/* 添加连接区域 */
+/* 添加連接區域 */
 .category-expanded::before {
     content: '';
     position: absolute;
     top: -8px; /* 與 margin-top 相同 */
     left: 0;
     right: 0;
-    height: 8px; /* 填充間隔区域 */
+    height: 8px; /* 填充間隔區域 */
     background: transparent; /* 保持透明 */
 }
 
-/* 展开面板中的分类网格 */
+/* 展開面板中的分類網格 */
 .category-expanded .category-pills {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
     gap: 8px;
     width: max-content;
-    max-width: 800px; /* 限制最大宽度 */
+    max-width: 800px; /* 限制最大寬度 */
 }
 
-/* 当父容器被hover時显示展开面板 */
+/* 當父容器被hover時顯示展開面板 */
 .category-selector:hover .category-expanded {
     opacity: 1;
     pointer-events: auto;
@@ -164,13 +164,13 @@
     flex-shrink: 0;
 }
 
-/* 移除滚动相关样式 */
+/* 移除滾動相關樣式 */
 .category-selector::before,
 .category-selector::after {
     display: none;
 }
 
-/* 统计卡片样式 */
+/* 統計卡片樣式 */
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -213,7 +213,7 @@
     color: var(--secondary-text);
 }
 
-/* 图表卡片样式 */
+/* 圖表卡片樣式 */
 .chart-grid {
     display: grid;
     gap: 24px;
@@ -280,7 +280,7 @@
     width: 100%;
 }
 
-/* 展开面板中的分类保持原有大小 */
+/* 展開面板中的分類保持原有大小 */
 .category-expanded .category-pill {
     padding: 8px 16px;
     font-size: 14px;
@@ -291,7 +291,7 @@
     height: 8px;
 }
 
-/* 修改 header-controls 样式 */
+/* 修改 header-controls 樣式 */
 .header-controls {
     grid-column: 2;
     display: flex;
@@ -301,7 +301,7 @@
     height: 36px;  /* 限制高度 */
 }
 
-/* 修改時間控制区域样式 */
+/* 修改時間控制區域樣式 */
 .time-controls {
     display: flex;
     align-items: center;
@@ -397,9 +397,9 @@
     color: white;
 }
 
-/* 范围切换控制靠右对齐 */
+/* 範圍切換控制靠右對齊 */
 .range-selector {
-    justify-self: end;  /* 在第四列中靠右对齐 */
+    justify-self: end;  /* 在第四列中靠右對齊 */
     display: flex;
     background: var(--hover-bg);
     border-radius: 24px;
@@ -407,16 +407,16 @@
 }
 
 .range-btn {
-    padding: 8px 20px;  /* 减小内边距，从10px 24px改为8px 20px */
+    padding: 8px 20px;  /* 減小內邊距，從10px 24px改為8px 20px */
     border: none;
-    border-radius: 20px;  /* 调整圆角以匹配外部容器 */
+    border-radius: 20px;  /* 調整圓角以匹配外部容器 */
     background: transparent;
     color: var(--secondary-text);
     font-size: 16px;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    min-width: 90px;      /* 增加最小宽度，从80px改为90px */
+    min-width: 90px;      /* 增加最小寬度，從80px改為90px */
     text-align: center;
 }
 
@@ -431,35 +431,35 @@
     color: var(--text-color);
 }
 
-/* 時間选择器样式 */
+/* 時間選擇器樣式 */
 .time-range-selector {
     display: flex;
     align-items: center;
-    gap: 16px;          /* 增加按钮間距 */
+    gap: 16px;          /* 增加按鈕間距 */
 }
 
 .time-button {
-    width: 36px;        /* 增大按钮尺寸 */
+    width: 36px;        /* 增大按鈕尺寸 */
     height: 36px;
     border-radius: 18px;
 }
 
 .time-display {
-    font-size: 24px;    /* 增大字体大小 */
-    min-width: 140px;   /* 增加最小宽度 */
+    font-size: 24px;    /* 增大字體大小 */
+    min-width: 140px;   /* 增加最小寬度 */
     font-weight: 600;
 }
 
 .time-button i {
-    font-size: 16px;    /* 增大图标大小 */
+    font-size: 16px;    /* 增大圖標大小 */
 }
 
-/* 移除旧的悬浮菜单样式 */
+/* 移除舊的懸浮菜單樣式 */
 .time-options {
     display: none;
 }
 
-/* 分类页面标题区域样式 */
+/* 分類頁面標題區域樣式 */
 .page-header {
     display: grid;
     grid-template-columns: auto minmax(auto, 300px) auto minmax(auto, 300px); /* 四列布局 */
@@ -483,7 +483,7 @@
     margin: 0;
 }
 
-/* 分类选择器样式 */
+/* 分類選擇器樣式 */
 .category-controls {
     display: flex;
     align-items: center;
@@ -494,10 +494,10 @@
 
 .category-display {
     font-family: var(--font-family-display);
-    font-size: 24px;  /* 增大字体大小 */
+    font-size: 24px;  /* 增大字體大小 */
     font-weight: 600;
     color: var(--text-color);
-    min-width: 140px;  /* 增加最小宽度 */
+    min-width: 140px;  /* 增加最小寬度 */
     text-align: center;
     letter-spacing: -0.025em;
 }
@@ -509,11 +509,11 @@
     <h1 class="page-title">分類分析</h1>
     <div class="category-selector">
         <div id="selectedCategory">
-            <!-- 当前选中的分类 -->
+            <!-- 當前選中的分類 -->
         </div>
         <div class="category-expanded">
             <div class="category-pills" id="categoryPills">
-                <!-- 所有分类 -->
+                <!-- 所有分類 -->
             </div>
         </div>
     </div>
@@ -559,7 +559,7 @@
         </div>
     </div>
     <div class="stat-card">
-        <h3>消费频率</h3>
+        <h3>消費頻率</h3>
         <div class="value" id="frequency">--</div>
         <div class="trend">
             <span id="frequencyTrend">--</span>
@@ -579,7 +579,7 @@
 <div class="chart-grid">
     <div class="chart-card">
         <div class="chart-header">
-            <h2 class="chart-title">消费規律分析</h2>
+            <h2 class="chart-title">消費規律分析</h2>
         </div>
         <div class="chart-container" id="patternChart"></div>
     </div>
@@ -588,7 +588,7 @@
 <div class="chart-grid">
     <div class="chart-card">
         <div class="chart-header">
-            <h2 class="chart-title">金额分布</h2>
+            <h2 class="chart-title">金額分布</h2>
         </div>
         <div class="chart-container" id="distributionChart"></div>
     </div>
@@ -597,9 +597,9 @@
 
 {% block scripts %}
 <script>
-// 添加金额格式化函数
+// 添加金額格式化函數
 function formatMoney(value) {
-    // 如果是整数，不显示小数位
+    // 如果是整數，不顯示小數位
     if (Number.isInteger(value)) {
         return new Intl.NumberFormat('zh-CN', {
             minimumFractionDigits: 0,
@@ -607,7 +607,7 @@ function formatMoney(value) {
         }).format(value);
     }
     
-    // 如果有小数，最多显示两位小数，但不强制显示两位
+    // 如果有小數，最多顯示兩位小數，但不強制顯示兩位
     return new Intl.NumberFormat('zh-CN', {
         minimumFractionDigits: 0,
         maximumFractionDigits: 2
@@ -619,22 +619,22 @@ document.addEventListener('DOMContentLoaded', function() {
     let patternChart = null;
     let distributionChart = null;
     let currentCategory = null;
-    let currentTimeRange = 'year';  // 默认为年度
+    let currentTimeRange = 'year';  // 默認為年度
     let currentYear = new Date().getFullYear();
     let currentMonth = new Date().getMonth() + 1;
     let availableYears = [];
     let availableMonths = {};
     
-    // 添加金额筛选功能
-    let currentFilter = 'all';  // 当前筛选类型
+    // 添加金額篩選功能
+    let currentFilter = 'all';  // 當前篩選類型
     
-    // 初始化图表
+    // 初始化圖表
     function initCharts() {
         trendChart = echarts.init(document.getElementById('trendChart'));
         patternChart = echarts.init(document.getElementById('patternChart'));
         distributionChart = echarts.init(document.getElementById('distributionChart'));
         
-        // 响应窗口调整
+        // 響應窗口調整
         window.addEventListener('resize', function() {
             trendChart.resize();
             patternChart.resize();
@@ -642,7 +642,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // 修改加载分类的函数
+    // 修改加載分類的函數
     function loadCategories() {
         fetch('/api/category_analysis')
             .then(response => response.json())
@@ -650,7 +650,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const allPillsContainer = document.getElementById('categoryPills');
                 const selectedPillContainer = document.getElementById('selectedCategory');
                 
-                // 默认选中餐饮美食分类
+                // 默認選中餐飲美食分類
                 const defaultCategory = '飲食';
                 selectedPillContainer.innerHTML = `
                     <div class="category-pill active" data-category="${defaultCategory}">
@@ -659,7 +659,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                 `;
                 
-                // 生成所有分类
+                // 生成所有分類
                 allPillsContainer.innerHTML = data.categories.map(category => `
                     <div class="category-pill${category === defaultCategory ? ' active' : ''}" data-category="${category}">
                         <span class="icon" style="background-color: ${window.getCategoryColor(category)}"></span>
@@ -667,17 +667,17 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                 `).join('');
 
-                // 绑定點擊事件
+                // 綁定點擊事件
                 document.querySelectorAll('.category-pill').forEach(pill => {
                     pill.addEventListener('click', function() {
                         const category = this.dataset.category;
                         
-                        // 更新选中状态
+                        // 更新選中狀態
                         document.querySelectorAll('.category-pill').forEach(p => 
                             p.classList.remove('active'));
                         this.classList.add('active');
                         
-                        // 更新显示的选中分类
+                        // 更新顯示的選中分類
                         selectedPillContainer.innerHTML = `
                             <div class="category-pill active" data-category="${category}">
                                 <span class="icon" style="background-color: ${window.getCategoryColor(category)}"></span>
@@ -685,21 +685,21 @@ document.addEventListener('DOMContentLoaded', function() {
                             </div>
                         `;
                         
-                        // 加载分类数据
+                        // 加載分類數據
                         loadCategoryData(category);
                     });
                 });
 
-                // 初始加载默认分类的数据
+                // 初始加載默認分類的數據
                 loadCategoryData(defaultCategory);
             });
     }
     
-    // 修改 HTML 中的初始按钮状态
+    // 修改 HTML 中的初始按鈕狀態
     document.querySelector('.range-btn[data-range="year"]').classList.add('active');
     document.querySelector('.range-btn[data-range="month"]').classList.remove('active');
 
-    // 添加時間控制相关函数
+    // 添加時間控制相關函數
     function updateTimeDisplay() {
         const timeDisplay = document.getElementById('timeDisplay');
         const prevBtn = document.getElementById('prevTime');
@@ -707,11 +707,11 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (currentTimeRange === 'all') {
             timeDisplay.textContent = '全部時間';
-            // 在"所有"模式下禁用時間切换按钮
+            // 在"所有"模式下禁用時間切換按鈕
             prevBtn.style.visibility = 'hidden';
             nextBtn.style.visibility = 'hidden';
         } else {
-            // 恢复時間切换按钮的显示
+            // 恢覆時間切換按鈕的顯示
             prevBtn.style.visibility = 'visible';
             nextBtn.style.visibility = 'visible';
             
@@ -751,31 +751,31 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // 修改范围切换按钮事件處理
+    // 修改範圍切換按鈕事件處理
     document.querySelectorAll('.range-btn').forEach(btn => {
         btn.addEventListener('click', function() {
             const range = this.dataset.range;
             
-            // 更新按钮状态
+            // 更新按鈕狀態
             document.querySelectorAll('.range-btn').forEach(b => 
                 b.classList.remove('active'));
             this.classList.add('active');
             
-            // 更新時間范围
+            // 更新時間範圍
             currentTimeRange = range;
             
-            // 更新显示
+            // 更新顯示
             updateTimeDisplay();
             updateTimeControls();
             
-            // 重新加载数据
+            // 重新加載數據
             if (currentCategory) {
                 loadCategoryData(currentCategory);
             }
         });
     });
     
-    // 恢复 backup 版本的時間相关函数
+    // 恢覆 backup 版本的時間相關函數
     function loadAvailableDates() {
         fetch('/api/category_available_dates')
             .then(response => response.json())
@@ -783,26 +783,26 @@ document.addEventListener('DOMContentLoaded', function() {
                 availableYears = data.years;
                 availableMonths = data.months;
                 
-                // 设置默认年份为最新的年份
+                // 設置默認年份為最新的年份
                 currentYear = Math.max(...availableYears);
-                // 设置默认月份为当年的最新月份
+                // 設置默認月份為當年的最新月份
                 currentMonth = Math.max(...availableMonths[currentYear]);
                 
                 updateTimeDisplay();
                 updateTimeControls();
-                loadCategories();  // 加载分类数据
+                loadCategories();  // 加載分類數據
             })
             .catch(error => {
                 console.error('Error loading available dates:', error);
-                showToast('加载日期数据失败，请重试');
+                showToast('加載日期數據失敗，請重試');
             });
     }
     
-    // 修改時間切换按钮事件
+    // 修改時間切換按鈕事件
     document.getElementById('prevTime').addEventListener('click', function() {
         if (currentTimeRange === 'year' && currentYear > Math.min(...availableYears)) {
             currentYear--;
-            // 切换年份時，设置月份为该年的最后一個月
+            // 切換年份時，設置月份為該年的最後一個月
             if (availableMonths[currentYear]) {
                 currentMonth = Math.max(...availableMonths[currentYear]);
             }
@@ -813,7 +813,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 currentYear--;
                 currentMonth = 12;
             }
-            // 确保月份在可用范围内
+            // 確保月份在可用範圍內
             if (availableMonths[currentYear]) {
                 const validMonths = availableMonths[currentYear];
                 if (!validMonths.includes(currentMonth)) {
@@ -831,7 +831,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('nextTime').addEventListener('click', function() {
         if (currentTimeRange === 'year' && currentYear < Math.max(...availableYears)) {
             currentYear++;
-            // 切换年份時，设置月份为该年的第一個月
+            // 切換年份時，設置月份為該年的第一個月
             if (availableMonths[currentYear]) {
                 currentMonth = Math.min(...availableMonths[currentYear]);
             }
@@ -842,7 +842,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 currentYear++;
                 currentMonth = 1;
             }
-            // 确保月份在可用范围内
+            // 確保月份在可用範圍內
             if (availableMonths[currentYear]) {
                 const validMonths = availableMonths[currentYear];
                 if (!validMonths.includes(currentMonth)) {
@@ -857,7 +857,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // 加载分类数据
+    // 加載分類數據
     function loadCategoryData(category) {
         if (!category) return;
         
@@ -868,7 +868,7 @@ document.addEventListener('DOMContentLoaded', function() {
             month: currentMonth.toString()
         });
         
-        // 添加金额范围参数
+        // 添加金額範圍參數
         if (currentFilter === 'large') {
             params.append('min_amount', '1000');
         } else if (currentFilter === 'small') {
@@ -879,7 +879,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 404) {
-                        // 返回一個空数据结构
+                        // 返回一個空數據結構
                         return {
                             category: category,
                             stats: {
@@ -921,14 +921,14 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .catch(error => {
                 console.error('Error loading category data:', error);
-                // 显示错误状态
+                // 顯示錯誤狀態
                 updateStats({
                     total_expense: 0,
                     transaction_count: 0,
                     avg_amount: 0,
                     expense_ratio: 0
                 });
-                // 清空图表
+                // 清空圖表
                 updateCharts({
                     trend: { dates: [], amounts: [], counts: [], ratios: [] },
                     pattern: {
@@ -946,70 +946,70 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     }
     
-    // 更新统计卡片
+    // 更新統計卡片
     function updateStats(stats) {
-        // 更新总支出和交易筆数
+        // 更新總支出和交易筆數
         document.getElementById('totalExpense').textContent = `${formatMoney(stats.total_expense)} 元`;
         document.getElementById('expenseCount').textContent = `${stats.transaction_count} 筆交易`;
         document.getElementById('avgExpense').textContent = `平均 ${formatMoney(stats.avg_amount)} 元/筆`;
         
         // 更新支出占比
         document.getElementById('expenseRatio').textContent = `${stats.expense_ratio}%`;
-        document.getElementById('ratioTrend').textContent = stats.total_expense > 0 ? '占总支出比例' : '暂無数据';
+        document.getElementById('ratioTrend').textContent = stats.total_expense > 0 ? '占總支出比例' : '暫無數據';
         
-        // 根据時間范围更新月均支出和交易频率
+        // 根據時間範圍更新月均支出和交易頻率
         const monthlyAvgElement = document.getElementById('monthlyAvg');
         const monthlyTrendElement = document.getElementById('monthlyTrend');
         const frequencyElement = document.getElementById('frequency');
         const frequencyTrendElement = document.getElementById('frequencyTrend');
         
         if (currentTimeRange === 'all') {
-            // 所有時間范围
-            const yearCount = Math.ceil(stats.date_range / 365); // 总天数转换为年数
-            const monthlyAvg = stats.total_expense / (stats.date_range / 30); // 按30天一個月计算
+            // 所有時間範圍
+            const yearCount = Math.ceil(stats.date_range / 365); // 總天數轉換為年數
+            const monthlyAvg = stats.total_expense / (stats.date_range / 30); // 按30天一個月計算
             monthlyAvgElement.textContent = `${formatMoney(monthlyAvg)} 元`;
-            monthlyTrendElement.textContent = '历史月均支出';
+            monthlyTrendElement.textContent = '歷史月均支出';
             
             const frequency = stats.transaction_count / stats.date_range;
             frequencyElement.textContent = `${frequency.toFixed(1)} 次`;
-            frequencyTrendElement.textContent = '历史日均交易';
+            frequencyTrendElement.textContent = '歷史日均交易';
             
         } else if (currentTimeRange === 'year') {
-            // 年度范围
+            // 年度範圍
             const monthlyAvg = stats.total_expense / 12;
             monthlyAvgElement.textContent = `${formatMoney(monthlyAvg)} 元`;
             monthlyTrendElement.textContent = '月均支出';
             
             const frequency = stats.transaction_count / 365;
             frequencyElement.textContent = `${frequency.toFixed(1)} 次`;
-            frequencyTrendElement.textContent = '日均交易频率';
+            frequencyTrendElement.textContent = '日均交易頻率';
             
         } else {
-            // 月度范围
+            // 月度範圍
             const daysInMonth = new Date(currentYear, currentMonth, 0).getDate();
             monthlyAvgElement.textContent = `${formatMoney(stats.total_expense)} 元`;
             monthlyTrendElement.textContent = '本月支出';
             
             const frequency = stats.transaction_count / daysInMonth;
             frequencyElement.textContent = `${frequency.toFixed(1)} 次`;
-            frequencyTrendElement.textContent = '日均交易频率';
+            frequencyTrendElement.textContent = '日均交易頻率';
         }
     }
     
-    // 更新图表
+    // 更新圖表
     function updateCharts(data) {
-        // 检查是否有数据
+        // 檢查是否有數據
         const hasData = data.trend.dates && data.trend.dates.length > 0;
         
-        // 支出趨勢图配置
+        // 支出趨勢圖配置
         const trendOption = {
             tooltip: {
                 trigger: 'axis',
                 axisPointer: {
-                    type: 'cross'  // 改用十字准星指示器
+                    type: 'cross'  // 改用十字準星指示器
                 },
                 formatter: function(params) {
-                    if (!hasData) return '暂無数据';
+                    if (!hasData) return '暫無數據';
                     const date = params[0].name;
                     const amount = params[0].value;
                     const ratio = params[1].value;
@@ -1025,12 +1025,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     return `${dateLabel}<br/>
                             支出：${formatMoney(amount)} 元<br/>
                             占比：${ratio.toFixed(1)}%<br/>
-                            筆数：${count} 筆<br/>
+                            筆數：${count} 筆<br/>
                             均值：${formatMoney(amount/count)} 元/筆`;
                 }
             },
             legend: {
-                data: ['支出金额', '支出占比'],
+                data: ['支出金額', '支出占比'],
                 top: 10,
                 right: 10
             },
@@ -1057,7 +1057,7 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             yAxis: [{
                 type: 'value',
-                name: '金额 (元)',
+                name: '金額 (元)',
                 position: 'left',
                 axisLabel: {
                     formatter: value => formatMoney(value)
@@ -1072,7 +1072,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }],
             series: [{
-                name: '支出金额',
+                name: '支出金額',
                 type: 'bar',
                 data: hasData ? data.trend.amounts : [],
                 itemStyle: {
@@ -1086,7 +1086,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     borderRadius: [4, 4, 0, 0]
                 },
                 emphasis: {
-                    focus: 'none',  // 不要让其他系列变暗
+                    focus: 'none',  // 不要讓其他系列變暗
                     itemStyle: {
                         color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
                             offset: 0,
@@ -1109,7 +1109,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 lineStyle: {
                     width: 3,
                     type: 'solid',
-                    color: '#6366f1'  // 使用不同的颜色
+                    color: '#6366f1'  // 使用不同的顏色
                 },
                 itemStyle: {
                     color: '#6366f1',
@@ -1124,11 +1124,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 },
                 z: 2,
-                smooth: 0.2  // 添加轻微的平滑效果
+                smooth: 0.2  // 添加輕微的平滑效果
             }]
         };
 
-        // 消费規律分析图配置
+        // 消費規律分析圖配置
         const patternOption = {
             tooltip: {
                 trigger: 'axis',
@@ -1137,7 +1137,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             },
             legend: {
-                data: ['交易次数', '交易金额'],
+                data: ['交易次數', '交易金額'],
                 top: 0
             },
             grid: {
@@ -1155,11 +1155,11 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             yAxis: [{
                 type: 'value',
-                name: '交易次数',
+                name: '交易次數',
                 position: 'left'
             }, {
                 type: 'value',
-                name: '交易金额',
+                name: '交易金額',
                 position: 'right',
                 axisLine: { show: true },
                 axisLabel: {
@@ -1167,7 +1167,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }],
             series: [{
-                name: '交易金额',
+                name: '交易金額',
                 type: 'line',
                 yAxisIndex: 1,
                 data: data.pattern.amounts,
@@ -1190,7 +1190,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 },
                 z: 1
             }, {
-                name: '交易次数',
+                name: '交易次數',
                 type: 'bar',
                 data: data.pattern.counts,
                 itemStyle: {
@@ -1201,18 +1201,18 @@ document.addEventListener('DOMContentLoaded', function() {
             }]
         };
 
-        // 金额分布图配置
+        // 金額分布圖配置
         const distributionOption = {
             tooltip: {
                 trigger: 'axis',
                 formatter: function(params) {
-                    if (!hasData) return '暂無数据';
+                    if (!hasData) return '暫無數據';
                     const range = params[0].name;
                     const count = params[0].value;
                     const total = data.distribution.counts.reduce((a, b) => a + b, 0);
                     const percentage = ((count / total) * 100).toFixed(1);
-                    return `金额范围：${range}<br/>
-                            交易筆数：${count} 筆<br/>
+                    return `金額範圍：${range}<br/>
+                            交易筆數：${count} 筆<br/>
                             占比：${percentage}%`;
                 }
             },
@@ -1232,7 +1232,7 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             yAxis: {
                 type: 'value',
-                name: '交易次数'
+                name: '交易次數'
             },
             series: [{
                 type: 'bar',
@@ -1252,7 +1252,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }]
         };
 
-        // 如果没有数据，添加空状态提示
+        // 如果沒有數據，添加空狀態提示
         if (!hasData) {
             [trendOption, patternOption, distributionOption].forEach(option => {
                 option.graphic = [{
@@ -1260,7 +1260,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     left: 'center',
                     top: 'middle',
                     style: {
-                        text: '暂無数据',
+                        text: '暫無數據',
                         fill: '#999',
                         font: '14px sans-serif'
                     }
@@ -1268,19 +1268,19 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
 
-        // 设置图表配置
-        trendChart.setOption(trendOption, true);  // 添加 true 参数以清除之前的配置
+        // 設置圖表配置
+        trendChart.setOption(trendOption, true);  // 添加 true 參數以清除之前的配置
         patternChart.setOption(patternOption, true);
         distributionChart.setOption(distributionOption, true);
 
-        // 为消费規律分析图添加點擊事件
+        // 為消費規律分析圖添加點擊事件
         patternChart.off('click');
         patternChart.on('click', function(params) {
             if (params.componentType === 'series') {
                 const hour = parseInt(params.name);
-                const title = `${currentCategory} - ${hour}時段交易明细`;
+                const title = `${currentCategory} - ${hour}時段交易明細`;
                 
-                // 构建查询参数
+                // 構建查詢參數
                 const queryParams = new URLSearchParams({
                     category: currentCategory,
                     hour: hour.toString(),
@@ -1292,7 +1292,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     queryParams.append('month', currentMonth.toString());
                 }
 
-                // 添加金额筛选参数
+                // 添加金額篩選參數
                 if (currentFilter === 'large') {
                     queryParams.append('min_amount', '1000');
                 } else if (currentFilter === 'small') {
@@ -1315,19 +1315,19 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // 为金额分布图添加點擊事件
+        // 為金額分布圖添加點擊事件
         distributionChart.off('click');
         distributionChart.on('click', function(params) {
             if (params.componentType === 'series') {
                 const range = params.name;
                 let title;
                 
-                // 构建基础查询参数
+                // 構建基礎查詢參數
                 const queryParams = new URLSearchParams({
                     category: currentCategory
                 });
 
-                // 解析金额范围
+                // 解析金額範圍
                 let [min, max] = range.split('-').map(num => parseFloat(num) || 0);
                 if (range.endsWith('+')) {
                     min = parseFloat(range.replace('+', ''));
@@ -1336,22 +1336,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 queryParams.append('min_amount', min.toString());
                 queryParams.append('max_amount', max === Infinity ? 'Infinity' : max.toString());
 
-                // 根据当前時間范围添加不同的参数
+                // 根據當前時間範圍添加不同的參數
                 if (currentTimeRange === 'all') {
-                    title = `${currentCategory} - ${range}元交易明细（所有時間）`;
+                    title = `${currentCategory} - ${range}元交易明細（所有時間）`;
                 } else if (currentTimeRange === 'year') {
-                    title = `${currentCategory} - ${range}元交易明细（${currentYear}年）`;
+                    title = `${currentCategory} - ${range}元交易明細（${currentYear}年）`;
                     queryParams.append('year', currentYear.toString());
                 } else if (currentTimeRange === 'month') {
-                    title = `${currentCategory} - ${range}元交易明细（${currentYear}年${currentMonth}月）`;
+                    title = `${currentCategory} - ${range}元交易明細（${currentYear}年${currentMonth}月）`;
                     queryParams.append('year', currentYear.toString());
                     queryParams.append('month', currentMonth.toString());
                 }
 
-                // 添加時間范围参数
+                // 添加時間範圍參數
                 queryParams.append('range', currentTimeRange);
 
-                // 获取交易记录
+                // 獲取交易記錄
                 fetch(`/api/transactions?${queryParams}`)
                     .then(response => {
                         if (!response.ok) {
@@ -1364,45 +1364,45 @@ document.addEventListener('DOMContentLoaded', function() {
                     })
                     .catch(error => {
                         console.error('Error fetching transaction data:', error);
-                        showToast('获取交易数据失败，请重试');
+                        showToast('獲取交易數據失敗，請重試');
                     });
             }
         });
 
-        // 为趨勢图添加點擊事件
+        // 為趨勢圖添加點擊事件
         trendChart.off('click');
         trendChart.on('click', function(params) {
-            if (params.componentType === 'series' && params.seriesName === '支出金额') {
+            if (params.componentType === 'series' && params.seriesName === '支出金額') {
                 const date = params.name;
                 let title, queryParams;
                 
-                // 构建基础查询参数
+                // 構建基礎查詢參數
                 queryParams = new URLSearchParams({
                     category: currentCategory
                 });
 
-                // 根据当前時間范围添加不同的参数
+                // 根據當前時間範圍添加不同的參數
                 if (currentTimeRange === 'all') {
-                    title = `${currentCategory} - ${date}年交易明细`;
+                    title = `${currentCategory} - ${date}年交易明細`;
                     queryParams.append('year', date);
                 } else if (currentTimeRange === 'year') {
                     const [year, month] = date.split('-');
-                    title = `${currentCategory} - ${year}年${month}月交易明细`;
+                    title = `${currentCategory} - ${year}年${month}月交易明細`;
                     queryParams.append('year', year);
                     queryParams.append('month', month);
                 } else {
-                    title = `${currentCategory} - ${date}交易明细`;
+                    title = `${currentCategory} - ${date}交易明細`;
                     queryParams.append('date', date);
                 }
 
-                // 添加金额筛选参数
+                // 添加金額篩選參數
                 if (currentFilter === 'large') {
                     queryParams.append('min_amount', '1000');
                 } else if (currentFilter === 'small') {
                     queryParams.append('max_amount', '1000');
                 }
 
-                // 获取交易记录
+                // 獲取交易記錄
                 fetch(`/api/transactions?${queryParams}`)
                     .then(response => {
                         if (!response.ok) {
@@ -1415,24 +1415,24 @@ document.addEventListener('DOMContentLoaded', function() {
                     })
                     .catch(error => {
                         console.error('Error fetching transaction data:', error);
-                        showToast('获取交易数据失败，请重试');
+                        showToast('獲取交易數據失敗，請重試');
                     });
             }
         });
     }
     
-    // 绑定金额過滤按钮事件
+    // 綁定金額過濾按鈕事件
     document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.addEventListener('click', function() {
-            // 更新按钮状态
+            // 更新按鈕狀態
             document.querySelectorAll('.filter-btn').forEach(b => 
                 b.classList.remove('active'));
             this.classList.add('active');
             
-            // 获取過滤类型
+            // 獲取過濾類型
             currentFilter = this.dataset.filter;
             
-            // 重新加载数据
+            // 重新加載數據
             if (currentCategory) {
                 const params = new URLSearchParams({
                     category: currentCategory,
@@ -1441,14 +1441,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     month: currentMonth.toString()
                 });
                 
-                // 添加金额范围参数
+                // 添加金額範圍參數
                 if (currentFilter === 'large') {
                     params.append('min_amount', '1000');
                 } else if (currentFilter === 'small') {
                     params.append('max_amount', '1000');
                 }
                 
-                // 重新加载分类数据
+                // 重新加載分類數據
                 fetch(`/api/category_analysis?${params}`)
                     .then(response => response.json())
                     .then(data => {
@@ -1461,7 +1461,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 初始化
     initCharts();
-    loadAvailableDates();  // 这会触发后续的初始化流程
+    loadAvailableDates();  // 這會觸發後續的初始化流程
 });
 </script>
 {% endblock %} 
